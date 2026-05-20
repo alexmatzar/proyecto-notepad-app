@@ -1,0 +1,87 @@
+<aside
+  class="sidebar"
+  [class.expanded]="isPanelOpen"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()">
+
+  @if (!isPanelOpen) {
+    <button class="sidebar-btn" style="background-color:#dbeafe; color:#2563eb;">
+      <i class="fa-solid fa-plus"></i>
+    </button>
+
+    <div class="w-8 h-px bg-gray-200 my-2"></div>
+
+    <button class="sidebar-btn" [class.active]="activeView === 'notes'" (click)="setView('notes')">
+      <i class="fa-regular fa-file-lines text-lg"></i>
+    </button>
+    <button class="sidebar-btn" [class.active]="activeView === 'code'" (click)="setView('code')">
+      <i class="fa-solid fa-code text-lg"></i>
+    </button>
+    <button class="sidebar-btn" [class.active]="activeView === 'calculator'" (click)="setView('calculator')">
+      <i class="fa-solid fa-calculator text-lg"></i>
+    </button>
+    <button class="sidebar-btn" [class.active]="activeView === 'table'" (click)="setView('table')">
+      <i class="fa-solid fa-table-list text-lg"></i>
+    </button>
+    <button class="sidebar-btn" [class.active]="activeView === 'chat'" (click)="setView('chat')">
+      <i class="fa-regular fa-comment-dots text-lg"></i>
+    </button>
+
+    <div class="mt-auto flex flex-col items-center">
+      <button class="sidebar-btn">
+        <i class="fa-regular fa-trash-can text-lg"></i>
+      </button>
+      <button class="sidebar-btn">
+        <i class="fa-regular fa-circle-question text-lg"></i>
+      </button>
+    </div>
+  }
+
+  @if (isPanelOpen) {
+    <div class="panel-content px-2">
+      <button class="panel-new-btn">
+        <i class="fa-solid fa-plus"></i> New Note
+      </button>
+      <div class="section-header">
+        <span class="panel-section-label">Notes</span>
+        <button class="view-all">View all</button>
+      </div>
+      <button class="panel-row active-note">
+        <i class="fa-regular fa-file-lines"></i>
+        Untitled Document
+      </button>
+
+      <div class="panel-divider"></div>
+
+      <span class="panel-section-label">Other Tools</span>
+      <div class="flex flex-col gap-1 mt-1">
+        <button class="panel-row">
+          <i class="fa-regular fa-file-lines"></i> AI Paraphraser
+        </button>
+        <button class="panel-row">
+          <i class="fa-solid fa-file-pdf"></i> Text to PDF
+        </button>
+        <button class="panel-row">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> AI Summarizer
+        </button>
+      </div>
+
+      <div class="panel-divider"></div>
+
+      <span class="panel-section-label">Other</span>
+      <div class="flex flex-col gap-1 mt-1">
+        <button class="panel-row">
+          <i class="fa-regular fa-comment-dots"></i> Feedback
+        </button>
+        <button class="panel-row">
+          <i class="fa-regular fa-trash-can"></i> Trash
+        </button>
+        <button class="panel-row">
+          <i class="fa-regular fa-circle-down"></i> More
+        </button>
+      </div>
+
+    </div>
+  }
+
+</aside>
