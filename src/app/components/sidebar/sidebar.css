@@ -130,3 +130,50 @@
   padding: 0 0.75rem;
   margin-bottom: 0.25rem;
 }
+.more-dropdown{
+
+    margin-left: 10px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    animation: dropdownAnimation 0.3s ease;
+}
+
+/* SUB ITEMS */
+
+.sub-item{
+
+    font-size: 14px;
+
+    padding-left: 10px;
+
+    opacity: 0.9;
+}
+
+/* ROTACIÓN ICONO */
+
+.rotate{
+
+    transform: rotate(180deg);
+
+    transition: 0.3s;
+}
+
+/* ANIMACIÓN */
+
+@keyframes dropdownAnimation{
+
+    from{
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
