@@ -1,0 +1,130 @@
+.toolbar-container {
+  height: 56px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 8px;
+  background-color: #ffffff;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  z-index: 50;
+  overflow: visible; /* Permite que los dropdowns se salgan de la barra */
+  flex-shrink: 0;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-right: 1px solid #e5e7eb;
+  padding-right: 8px;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+
+.toolbar-group.no-border {
+  border-right: none;
+}
+
+.relative {
+  position: relative;
+}
+
+/* ========================================= */
+/* BOTONES NORMALES DE LA BARRA              */
+/* ========================================= */
+.toolbar-btn {
+  background: transparent;
+  border: none;
+  color: #374151;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.toolbar-btn:hover { background-color: #f3f4f6; }
+.toolbar-btn.disabled { opacity: 0.5; cursor: not-allowed; }
+.small-btn { padding: 6px; }
+.flex-btn { gap: 4px; padding: 6px 8px; font-size: 0.875rem; }
+.font-size-label { font-size: 0.875rem; padding: 0 8px; color: #374151; }
+
+/* ========================================= */
+/* COMBOBOXES (LOS BOTONES LARGOS)           */
+/* ========================================= */
+.combobox-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  color: #374151;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.combobox-btn:hover { background-color: #f3f4f6; }
+.combobox-label { display: flex; align-items: center; gap: 8px; }
+
+/* --- TAMAÑOS DE LOS COMBOBOXES DE LA BARRA --- */
+.font-combobox   { min-width: 170px; } /* <-- Cambia este valor para la Fuente */
+.format-combobox { min-width: 150px; } /* <-- Cambia este valor para Normal/Headings */
+.insert-combobox { min-width: 120px; }  
+.align-combobox  { min-width: 120px; } 
+
+
+/* ========================================= */
+/* MENÚS DESPLEGABLES (DROPDOWNS)            */
+/* ========================================= */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 4px 0;
+  z-index: 50;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* --- TAMAÑOS DE LAS VENTANITAS FLOTANTES --- */
+.font-menu    { width: 180px; } /* <-- Cambia el ancho de la lista de fuentes */
+.format-menu  { width: 200px; } /* <-- Cambia el ancho de la lista de formatos */
+.effects-menu { width: 192px; left: auto; right: 0; }
+.insert-menu  { width: 220px; }
+.align-menu   { width: 160px; left: auto; right: 0; } 
+
+.dropdown-item {
+  width: 100%;
+  text-align: left;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  color: #374151;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.dropdown-item:hover { background-color: #f3f4f6; }
+
+.dropdown-divider {
+  border-bottom: 1px solid #e5e7eb;
+  margin: 4px 0;
+}
+
+.icon-fixed {
+  width: 20px;
+  text-align: center;
+  margin-right: 8px;
+  color: #6b7280;
+}

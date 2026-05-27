@@ -1,0 +1,133 @@
+<div class="toolbar-container" data-purpose="rich-text-toolbar">
+  
+  <div class="toolbar-group">
+    <button class="toolbar-btn"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="toolbar-btn disabled"><i class="fa-solid fa-rotate-right"></i></button>
+  </div>
+
+  <div class="toolbar-group relative">
+    <button (click)="toggleDropdown('fontFamily', $event)" class="combobox-btn font-combobox">
+      <span class="combobox-label"><span class="font-serif italic font-bold">T</span> Arial</span>
+      <i class="fa-solid fa-chevron-down text-xs"></i>
+    </button>
+    @if (openDropdown === 'fontFamily') {
+      <div class="dropdown-menu font-menu" (click)="preventClose($event)">
+        <button class="dropdown-item">Arial</button>
+        <button class="dropdown-item">Courier New</button>
+        <button class="dropdown-item">Georgia</button>
+        <button class="dropdown-item">Times New Roman</button>
+        <button class="dropdown-item">Trebuchet MS</button>
+        <button class="dropdown-item">Verdana</button>
+      </div>
+    }
+  </div>
+
+  <div class="toolbar-group relative">
+    <button (click)="toggleDropdown('format', $event)" class="combobox-btn format-combobox">
+      <span class="combobox-label"><i class="fa-solid fa-bars-staggered"></i> Normal</span>
+      <i class="fa-solid fa-chevron-down text-xs"></i>
+    </button>
+    @if (openDropdown === 'format') {
+      <div class="dropdown-menu format-menu" (click)="preventClose($event)">
+        <button class="dropdown-item font-normal">Normal</button>
+        <button class="dropdown-item font-bold text-xl">Heading 1</button>
+        <button class="dropdown-item font-bold text-lg">Heading 2</button>
+        <button class="dropdown-item font-bold text-md">Heading 3</button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item"><i class="fa-solid fa-list-ol icon-fixed"></i> Numbered List</button>
+        <button class="dropdown-item"><i class="fa-solid fa-list-ul icon-fixed"></i> Bullet List</button>
+        <button class="dropdown-item"><i class="fa-solid fa-list-check icon-fixed"></i> Check List</button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item"><i class="fa-solid fa-quote-right icon-fixed"></i> Quote</button>
+        <button class="dropdown-item"><i class="fa-solid fa-code icon-fixed"></i> Code Block</button>
+      </div>
+    }
+  </div>
+
+  <div class="toolbar-group">
+    <button class="toolbar-btn small-btn"><i class="fa-solid fa-minus text-xs"></i></button>
+    <span class="font-size-label">16</span>
+    <button class="toolbar-btn small-btn"><i class="fa-solid fa-plus text-xs"></i></button>
+  </div>
+
+  <div class="toolbar-group">
+    <button class="toolbar-btn font-bold">B</button>
+    <button class="toolbar-btn italic font-serif">I</button>
+    <button class="toolbar-btn underline">U</button>
+    <button class="toolbar-btn text-xs"><i class="fa-solid fa-code"></i></button>
+    <button class="toolbar-btn"><i class="fa-solid fa-link text-sm"></i></button>
+  </div>
+
+  <div class="toolbar-group">
+    <button class="toolbar-btn flex-btn">
+      <span class="font-bold underline decoration-4 decoration-black underline-offset-4">A</span>
+      <i class="fa-solid fa-chevron-down text-[10px]"></i>
+    </button>
+    <button class="toolbar-btn flex-btn">
+      <i class="fa-solid fa-highlighter text-sm border-b-4 border-yellow-300 pb-0.5"></i>
+      <i class="fa-solid fa-chevron-down text-[10px]"></i>
+    </button>
+    
+    <div class="relative">
+      <button (click)="toggleDropdown('textEffects', $event)" class="toolbar-btn flex-btn">
+        Aa <i class="fa-solid fa-chevron-down text-[10px]"></i>
+      </button>
+      @if (openDropdown === 'textEffects') {
+        <div class="dropdown-menu effects-menu" (click)="preventClose($event)">
+          <button class="dropdown-item lowercase">Lowercase</button>
+          <button class="dropdown-item uppercase">Uppercase</button>
+          <button class="dropdown-item capitalize">Capitalize</button>
+          <button class="dropdown-item line-through">Strikethrough</button>
+          <button class="dropdown-item">X<sub>2</sub> Subscript</button>
+          <button class="dropdown-item">X<sup>2</sup> Superscript</button>
+          <button class="dropdown-item bg-yellow-200">Highlight</button>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item text-red-600"><i class="fa-solid fa-eraser icon-fixed"></i> Clear Formatting</button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="toolbar-group relative">
+    <button (click)="toggleDropdown('insert', $event)" class="combobox-btn insert-combobox">
+      <span class="combobox-label"><i class="fa-solid fa-plus text-xs"></i> Insert</span>
+      <i class="fa-solid fa-chevron-down text-xs"></i>
+    </button>
+    @if (openDropdown === 'insert') {
+      <div class="dropdown-menu insert-menu" (click)="preventClose($event)">
+        <button class="dropdown-item"><i class="fa-solid fa-minus icon-fixed"></i> Horizontal Rule</button>
+        <button class="dropdown-item"><i class="fa-solid fa-file-lines icon-fixed"></i> Page Break</button>
+        <button class="dropdown-item"><i class="fa-regular fa-image icon-fixed"></i> Image</button>
+        <button class="dropdown-item"><i class="fa-solid fa-pen icon-fixed"></i> Draw</button>
+        <button class="dropdown-item"><i class="fa-solid fa-table icon-fixed"></i> Table</button>
+        <button class="dropdown-item"><i class="fa-solid fa-columns icon-fixed"></i> Add Columns</button>
+        <button class="dropdown-item"><i class="fa-solid fa-calculator icon-fixed"></i> Equation</button>
+        <button class="dropdown-item"><i class="fa-regular fa-note-sticky icon-fixed"></i> Sticky Note</button>
+        <button class="dropdown-item"><i class="fa-solid fa-compress icon-fixed"></i> Collapsible</button>
+        <button class="dropdown-item"><i class="fa-regular fa-calendar icon-fixed"></i> Date</button>
+      </div>
+    }
+  </div>
+
+  <div class="toolbar-group relative no-border">
+    <button (click)="toggleDropdown('align', $event)" class="combobox-btn align-combobox">
+      <span class="combobox-label"><i class="fa-solid fa-align-left"></i> Left Align</span>
+      <i class="fa-solid fa-chevron-down text-[10px]"></i>
+    </button>
+    @if (openDropdown === 'align') {
+      <div class="dropdown-menu align-menu" (click)="preventClose($event)">
+        <button class="dropdown-item"><i class="fa-solid fa-align-left icon-fixed"></i> Left Align</button>
+        <button class="dropdown-item"><i class="fa-solid fa-align-center icon-fixed"></i> Center</button>
+        <button class="dropdown-item"><i class="fa-solid fa-align-right icon-fixed"></i> Right</button>
+        <button class="dropdown-item"><i class="fa-solid fa-align-justify icon-fixed"></i> Justify</button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item"><i class="fa-solid fa-align-left icon-fixed"></i> Start</button>
+        <button class="dropdown-item"><i class="fa-solid fa-align-right icon-fixed"></i> End</button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item"><i class="fa-solid fa-outdent icon-fixed"></i> Outdent</button>
+        <button class="dropdown-item"><i class="fa-solid fa-indent icon-fixed"></i> Indent</button>
+      </div>
+    }
+  </div>
+
+</div>

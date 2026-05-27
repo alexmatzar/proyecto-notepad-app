@@ -3,3 +3,139 @@
   flex-shrink: 0;
   z-index: 10;
 }
+
+.top-nav-header {
+  /* ========================================================= */
+  /* AQUÍ CONTROLAS EL ALTO (GROSOR VERTICAL) DE TU TOP NAVBAR */
+  /* Originalmente Tailwind 'h-14' equivale a '56px' o '3.5rem'*/
+  height: 48px; 
+  /* ========================================================= */
+  
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+/* --- SECCIÓN IZQUIERDA --- */
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hamburger-btn {
+  color: #6b7280;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.brand-text {
+  line-height: 1.25;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.doc-title-wrapper {
+  margin-left: 70px;
+}
+
+.doc-title-input {
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 3px 12px;
+  font-size: 0.875rem;
+  color: #4b5563;
+  width: 200px; /* Ancho del input original de Tailwind */
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  outline: none;
+}
+.doc-title-input:focus {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 2px #dbeafe;
+}
+
+/* --- SECCIÓN DERECHA --- */
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: text;
+  transition: background-color 0.2s;
+}
+
+.search-icon {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.search-placeholder {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin-left: 8px;
+  margin-right: 5%;
+}
+
+.shortcuts {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.shortcut-key {
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.actions-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  border-radius: 15%;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.action-btn:hover {
+  background-color: #f3f4f6;
+}

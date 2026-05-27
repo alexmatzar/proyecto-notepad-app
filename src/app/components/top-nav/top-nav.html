@@ -1,49 +1,50 @@
-<header class="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 shrink-0 shadow-sm z-10" data-purpose="top-navigation">
-  <div class="flex items-center gap-4">
-    <button class="text-gray-500 hover:bg-gray-100 p-2 rounded-md transition-colors" (click)="onHamburger()">
+<header class="top-nav-header" data-purpose="top-navigation">
+  
+  <div class="left-section">
+    <button class="hamburger-btn" (click)="onHamburger()">
       <i class="fa-solid fa-bars"></i>
     </button>
 
-    <div class="flex items-center gap-2 cursor-pointer">
+    <div class="brand">
       <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 2L22 12L12 22L2 12L12 2Z" fill="#0ea5e9"></path>
         <path d="M12 2L2 12L12 22V2Z" fill="#0284c7"></path>
       </svg>
-      <div class="leading-tight">
-        <div class="text-sm font-semibold text-gray-800">Online</div>
-        <div class="text-sm font-semibold text-gray-800">Notepad</div>
+      <div class="brand-text">
+        <div>Online</div>
+        <div>Notepad</div>
       </div>
     </div>
 
-    <div class="ml-6">
+    <div class="doc-title-wrapper">
       <input
-        class="border border-gray-200 rounded px-3 py-1.5 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 w-64 shadow-sm"
-        placeholder="Document title..."
-        type="text"
-        value="Untitled Document" />
+        class="doc-title-input"
+        placeholder="Untitled Document"
+        type="text" />
     </div>
   </div>
 
-  <div class="flex items-center gap-3">
-    <div class="relative flex items-center bg-gray-50 border border-gray-200 rounded-md px-3 py-1.5 cursor-text hover:bg-white transition-colors">
-      <i class="fa-solid fa-magnifying-glass text-gray-400 text-sm"></i>
-      <span class="text-sm text-gray-400 ml-2 mr-10">Search...</span>
-      <div class="flex items-center gap-1">
-        <span class="bg-gray-100 border border-gray-200 text-gray-500 text-xs px-1.5 py-0.5 rounded">Ctrl</span>
-        <span class="bg-gray-100 border border-gray-200 text-gray-500 text-xs px-1.5 py-0.5 rounded">K</span>
+  <div class="right-section">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <span class="search-placeholder">Search...</span>
+      <div class="shortcuts">
+        <span class="shortcut-key">Ctrl</span>
+        <span class="shortcut-key">K</span>
       </div>
     </div>
 
-    <div class="flex items-center gap-1 ml-2 border-l border-gray-200 pl-3">
-      <button class="w-9 h-9 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full transition-colors border border-gray-200">
+    <div class="actions-group">
+      <button class="action-btn">
         <i class="fa-regular fa-moon"></i>
       </button>
-      <button class="w-9 h-9 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full transition-colors border border-gray-200">
+      <button class="action-btn">
         <i class="fa-solid fa-headphones"></i>
       </button>
-      <button class="w-9 h-9 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full transition-colors border border-gray-200">
+      <button class="action-btn">
         <i class="fa-regular fa-user"></i>
       </button>
     </div>
   </div>
+
 </header>

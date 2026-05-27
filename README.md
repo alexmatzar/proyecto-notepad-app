@@ -1,12 +1,12 @@
-# Bloc de Notas Online
+# Bloc de notas online
 
-Proyecto final desarrollado con Angular y Firebase Realtime Database usando REST API
+Proyecto final desarrollado con angular y firebase realtime database usando REST API
 
-## Tecnologías utilizadas
+## Tecnologías
 
 - Angular 17
 - TypeScript
-- Firebase Realtime Database
+- Firebase realtime database
 - Angular Router
 - HttpClient
 - CSS
@@ -14,9 +14,9 @@ Proyecto final desarrollado con Angular y Firebase Realtime Database usando REST
 ## Funcionalidades
 
 - Crear notas
-- Editar notas
-- Eliminar notas
-- Listado de notas
+- Editarlas
+- Eliminarlas
+- Listarlas
 - Editor de texto
 - Responsive design
 
@@ -34,7 +34,7 @@ ng serve
 
 ## Firebase
 
-El proyecto utiliza Firebase Realtime Database mediante REST API sin usar Firebase SDK ni AngularFire.
+El proyecto usa firebase realtime database mediante REST API sin usar firebaseSDK ni angularfire.
 
 ## Autores
 

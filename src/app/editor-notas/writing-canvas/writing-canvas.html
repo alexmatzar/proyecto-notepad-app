@@ -1,0 +1,37 @@
+<div class="canvas-wrapper" data-purpose="writing-canvas">
+
+  <div class="editor-container">
+    
+    <div
+      #editor
+      class="editable-area"
+      contenteditable="true"
+      (input)="onInput($event)">
+    </div>
+
+    @if (isEmpty) {
+      <div class="empty-state" (click)="focusEditor()">
+        <div class="hint-text">Start writing, press '/' for commands...</div>
+        
+        <button class="help-write-btn" (click)="$event.stopPropagation()">
+          <i class="fa-solid fa-wand-magic-sparkles magic-icon"></i>
+          Help me write
+        </button>
+      </div>
+    }
+
+  </div>
+
+</div>
+
+<div class="bottom-actions-right" data-purpose="bottom-right-actions">
+  <button class="action-btn"><i class="fa-regular fa-copy"></i></button>
+  <button class="action-btn"><i class="fa-solid fa-download"></i></button>
+  <button class="action-btn delete-btn"><i class="fa-regular fa-trash-can"></i></button>
+</div>
+
+<div class="bottom-actions-left" data-purpose="bottom-left-actions">
+  <button class="upload-btn">
+    <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload Doc
+  </button>
+</div>

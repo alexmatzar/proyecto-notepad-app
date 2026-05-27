@@ -1,0 +1,133 @@
+:host {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  position: relative;
+}
+
+.canvas-wrapper {
+  flex: 1;
+  overflow: auto;
+  padding: 2rem 3rem; /* Espaciado interno cómodo (p-8) */
+  position: relative;
+  color: #1f2937;
+  font-size: 1.125rem;
+}
+
+.editor-container {
+  position: relative;
+  min-height: 400px;
+}
+
+/* El área real donde el usuario teclea */
+.editable-area {
+  outline: none;
+  min-height: 100%;
+  line-height: 1.6;
+  position: relative;
+  z-index: 2; /* Se coloca por encima del texto de ayuda */
+}
+
+/* El grupo de Hint + Botón que aparece cuando está vacío */
+.empty-state {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  cursor: text;
+}
+
+.hint-text {
+  color: #9ca3af;
+  margin-bottom: 1.5rem; /* Separación exacta con el botón */
+}
+
+/* El botón de IA */
+.help-write-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: #374151;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.help-write-btn:hover {
+  background-color: #f9fafb;
+}
+
+.magic-icon {
+  color: #0ea5e9;
+  transition: color 0.2s;
+}
+
+.help-write-btn:hover .magic-icon {
+  color: #3b82f6;
+}
+
+/* --- Botones inferiores (Copiar, Descargar, Borrar, Subir) --- */
+.bottom-actions-right {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.action-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  background-color: #f9fafb;
+  color: #374151;
+}
+
+.delete-btn:hover {
+  color: #ef4444; 
+}
+
+.bottom-actions-left {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 10;
+}
+
+.upload-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.upload-btn:hover {
+  color: #374151;
+}
