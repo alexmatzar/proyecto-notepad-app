@@ -176,3 +176,126 @@
     }
 
 }
+
+/* ========================================= */
+/* HOVER TRASH ICON PARA LAS NOTAS           */
+/* ========================================= */
+.note-item-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.note-item-wrapper .panel-row {
+  padding-right: 2rem; /* Deja espacio para el basurero */
+}
+
+.note-title-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trash-hover-btn {
+  position: absolute;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 0.875rem;
+  padding: 0.3rem;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s;
+}
+
+/* Muestra el basurero al pasar el ratón por toda la fila */
+.note-item-wrapper:hover .trash-hover-btn {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Se pone rojo si el cursor toca directamente el basurero */
+.trash-hover-btn:hover {
+  color: #ef4444; 
+}
+
+/* ========================================= */
+/* ESTILOS DEL MODAL DE CONFIRMACIÓN         */
+/* ========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* Por encima de todo */
+}
+
+.modal-box {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 24px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  animation: modalPop 0.2s ease-out;
+}
+
+.modal-title {
+  margin: 0 0 8px 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.modal-desc {
+  margin: 0 0 24px 0;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal-btn {
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-btn {
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
+.cancel-btn:hover {
+  background-color: #f9fafb;
+}
+
+.delete-confirm-btn {
+  background-color: #ef4444;
+  border: 1px solid #ef4444;
+  color: #ffffff;
+}
+.delete-confirm-btn:hover {
+  background-color: #dc2626;
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

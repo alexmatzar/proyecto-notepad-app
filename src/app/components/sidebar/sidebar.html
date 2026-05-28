@@ -12,13 +12,15 @@
       <i class="fa-solid fa-plus"></i>
     </button>
 
-    <button
-      class="sidebar-btn"
-      [class.active]="activeView === 'notes'"
-      (click)="setView('notes')"
-      title="Notes">
-      <i class="fa-regular fa-file-lines text-lg"></i>
-    </button>
+    @for (note of noteService.notes(); track note.id) {
+      <button
+        class="sidebar-btn"
+        [class.active]="noteService.activeNoteId() === note.id"
+        (click)="selectNote(note.id)"
+        [title]="note.titulo">
+        <i class="fa-regular fa-file-lines text-lg"></i>
+      </button>
+    }
 
     <div class="w-8 h-px bg-gray-200 my-2"></div>
 
@@ -55,7 +57,7 @@
 
     <div class="panel-content px-2">
 
-      <button class="panel-new-btn">
+      <button class="panel-new-btn" (click)="createNewNote()">
         <i class="fa-solid fa-plus"></i>
         New Note
       </button>
@@ -72,13 +74,20 @@
 
       </div>
 
-      <button class="panel-row active-note">
-
-        <i class="fa-regular fa-file-lines"></i>
-
-        Untitled Document
-
-      </button>
+      @for (note of noteService.notes(); track note.id) {
+        <div class="note-item-wrapper">
+          <button class="panel-row" 
+                  [class.active-note]="noteService.activeNoteId() === note.id"
+                  (click)="selectNote(note.id)">
+            <i class="fa-regular fa-file-lines"></i>
+            <span class="note-title-text">{{ note.titulo }}</span>
+          </button>
+          
+          <button class="trash-hover-btn" (click)="openDeleteModal(note, $event)" title="Move to trash">
+            <i class="fa-regular fa-trash-can"></i>
+          </button>
+        </div>
+      }
 
       <div class="panel-divider"></div>
 
@@ -187,3 +196,17 @@
   }
 
 </aside>
+
+@if (showDeleteModal && noteToDelete) {
+  <div class="modal-overlay">
+    <div class="modal-box">
+      <h3 class="modal-title">Move to trash?</h3>
+      <p class="modal-desc">“{{ noteToDelete.titulo }}” will be moved to trash.</p>
+      
+      <div class="modal-actions">
+        <button class="modal-btn cancel-btn" (click)="cancelDelete()">Cancel</button>
+        <button class="modal-btn delete-confirm-btn" (click)="executeDelete()">Move to trash</button>
+      </div>
+    </div>
+  </div>
+}

@@ -20,7 +20,9 @@
       <input
         class="doc-title-input"
         placeholder="Untitled Document"
-        type="text" />
+        type="text"
+        [value]="noteService.getActiveNote()?.titulo === 'Untitled Document' ? '' : noteService.getActiveNote()?.titulo"
+        (input)="onTitleChange($event)" />
     </div>
   </div>
 

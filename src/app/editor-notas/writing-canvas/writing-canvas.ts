@@ -1,4 +1,5 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, effect } from '@angular/core';
+import { NoteService } from '../../services/note';
 
 @Component({
   selector: 'app-writing-canvas',
@@ -8,19 +9,40 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   styleUrl: './writing-canvas.css'
 })
 export class WritingCanvasComponent {
-  // Estado que controla si mostramos el texto y el botón
+  public noteService = inject(NoteService);
   isEmpty: boolean = true;
+  
+  typingTimer: any;
 
   @ViewChild('editor') editorElement!: ElementRef;
 
-  onInput(event: Event) {
-    const target = event.target as HTMLElement;
-    // .trim() ignora los saltos de línea (<br>) o espacios vacíos
-    const content = target.innerText.trim();
-    this.isEmpty = content.length === 0;
+  constructor() {
+    effect(() => {
+      const activeNote = this.noteService.getActiveNote();
+      if (this.editorElement && activeNote) {
+        if (this.editorElement.nativeElement.innerText.trim() !== activeNote.contenido.trim()) {
+           this.editorElement.nativeElement.innerText = activeNote.contenido;
+        }
+        this.isEmpty = activeNote.contenido.trim().length === 0;
+      }
+    });
   }
 
-  // Si hacen clic en el área del texto falso, enfocamos el editor real
+  onInput(event: Event) {
+    const target = event.target as HTMLElement;
+    const content = target.innerText;
+    
+    this.isEmpty = content.trim().length === 0;
+    
+    this.noteService.updateActiveNoteContent(content);
+
+    clearTimeout(this.typingTimer);
+    
+    this.typingTimer = setTimeout(() => {
+      this.noteService.handleAFKState(content);
+    }, 1000);
+  }
+
   focusEditor() {
     if (this.editorElement) {
       this.editorElement.nativeElement.focus();
