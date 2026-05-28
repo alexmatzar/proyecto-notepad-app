@@ -128,3 +128,28 @@
   margin-right: 8px;
   color: #6b7280;
 }
+
+/* ========================================= */
+/* INPUT DE TAMAÑO DE FUENTE                 */
+/* ========================================= */
+.font-size-input {
+  width: 40px;
+  text-align: center;
+  border: 1px solid transparent;
+  font-size: 0.875rem;
+  color: #374151;
+  outline: none;
+  background: transparent;
+  border-radius: 4px;
+  padding: 4px;
+}
+.font-size-input:hover, .font-size-input:focus {
+  border-color: #e5e7eb;
+  background: #f9fafb;
+}
+/* Oculta las flechas del input en Chrome/Safari */
+.font-size-input::-webkit-outer-spin-button,
+.font-size-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

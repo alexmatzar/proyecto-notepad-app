@@ -16,16 +16,8 @@ export class EditorToolbarComponent {
   isItalic: boolean = false;
   isUnderline: boolean = false;
 
+  currentFontSize: number = 16; 
   savedSelection: Range | null = null;
-
-  // --- VARIABLES PARA EL TAMAÑO DE FUENTE ---
-  fontSizeIndex: number = 3; // 3 es el tamaño por defecto del navegador (equivale a ~16px)
-  fontSizes: number[] = [10, 13, 16, 18, 24, 32, 48]; // Escalas 1 al 7
-
-  // Getter para mostrar el número bonito en el HTML
-  get displayFontSize(): number {
-    return this.fontSizes[this.fontSizeIndex - 1] || 16;
-  }
 
   toggleDropdown(dropdownName: string, event: Event) {
     event.stopPropagation();
@@ -50,12 +42,6 @@ export class EditorToolbarComponent {
     this.isBold = document.queryCommandState('bold');
     this.isItalic = document.queryCommandState('italic');
     this.isUnderline = document.queryCommandState('underline');
-
-    // Detectar el tamaño de fuente en donde está el cursor
-    const size = document.queryCommandValue('fontSize');
-    if (size) {
-      this.fontSizeIndex = parseInt(size, 10) || 3;
-    }
   }
 
   preventClose(event: Event) {
@@ -67,6 +53,9 @@ export class EditorToolbarComponent {
   }
 
   executeCommand(command: string, value?: string) {
+    const editor = document.querySelector('.editable-area') as HTMLElement;
+    if (editor) editor.focus();
+
     if (this.savedSelection) {
       const sel = window.getSelection();
       if (sel) {
@@ -74,7 +63,12 @@ export class EditorToolbarComponent {
         sel.addRange(this.savedSelection);
       }
     }
+    
     document.execCommand(command, false, value);
+
+    if (editor) {
+      editor.dispatchEvent(new Event('input', { bubbles: true }));
+    }
   }
 
   undo() { this.executeCommand('undo'); }
@@ -87,7 +81,7 @@ export class EditorToolbarComponent {
   }
 
   applyFormat(tag: string, label: string) {
-    this.executeCommand('formatBlock', tag);
+    this.executeCommand('formatBlock', `<${tag}>`);
     this.selectedFormat = label;
     this.openDropdown = null;
   }
@@ -103,18 +97,76 @@ export class EditorToolbarComponent {
     this.openDropdown = null;
   }
 
-  // --- FUNCIONES DE TAMAÑO DE FUENTE ---
-  increaseFontSize() {
-    if (this.fontSizeIndex < 7) { // 7 es el máximo nativo de HTML
-      this.fontSizeIndex++;
-      this.executeCommand('fontSize', this.fontSizeIndex.toString());
+  applyCustomFontSize(size: number) {
+    const editor = document.querySelector('.editable-area') as HTMLElement;
+    if (editor) editor.focus();
+
+    if (this.savedSelection) {
+      const sel = window.getSelection();
+      if (sel) {
+        sel.removeAllRanges();
+        sel.addRange(this.savedSelection);
+      }
+    }
+
+    const sel = window.getSelection();
+    if (!sel) return;
+
+    if (sel.isCollapsed) {
+      const span = document.createElement('span');
+      span.style.fontSize = size + 'px';
+      span.innerHTML = '&#8203;'; 
+      
+      const range = sel.getRangeAt(0);
+      range.insertNode(span);
+      range.setStart(span.firstChild as Node, 1);
+      range.collapse(true);
+      
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } else {
+      document.execCommand('styleWithCSS', false, 'false');
+      document.execCommand('fontSize', false, '7');
+      
+      const fontElements = document.querySelectorAll('font[size="7"]');
+      
+      fontElements.forEach((node) => {
+        const el = node as HTMLElement;
+        el.removeAttribute('size');
+        el.style.fontSize = size + 'px';
+      });
+    }
+
+    if (editor) {
+      editor.dispatchEvent(new Event('input', { bubbles: true }));
     }
   }
 
+  increaseFontSize() {
+    this.currentFontSize += 2;
+    this.applyCustomFontSize(this.currentFontSize);
+  }
+
   decreaseFontSize() {
-    if (this.fontSizeIndex > 1) { // 1 es el mínimo nativo de HTML
-      this.fontSizeIndex--;
-      this.executeCommand('fontSize', this.fontSizeIndex.toString());
+    if (this.currentFontSize > 2) {
+      this.currentFontSize -= 2;
+      this.applyCustomFontSize(this.currentFontSize);
+    }
+  }
+
+  onFontSizeFocus() {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0) {
+      this.savedSelection = sel.getRangeAt(0);
+    }
+  }
+
+  onFontSizeManualChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const val = parseInt(input.value, 10);
+    if (!isNaN(val)) {
+      this.currentFontSize = val;
+      this.applyCustomFontSize(val);
     }
   }
 }
