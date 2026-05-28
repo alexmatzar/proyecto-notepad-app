@@ -9,16 +9,14 @@
       (input)="onInput($event)">
     </div>
 
-    @if (isEmpty) {
-      <div class="empty-state" (click)="focusEditor()">
-        <div class="hint-text">Start writing, press '/' for commands...</div>
-        
-        <button class="help-write-btn" (click)="$event.stopPropagation()">
-          <i class="fa-solid fa-wand-magic-sparkles magic-icon"></i>
-          Help me write
-        </button>
-      </div>
-    }
+    <div class="empty-state" [style.display]="isEmpty ? 'block' : 'none'" (click)="focusEditor()">
+      <div class="hint-text">Start writing, press '/' for commands...</div>
+      
+      <button class="help-write-btn" (click)="$event.stopPropagation()">
+        <i class="fa-solid fa-wand-magic-sparkles magic-icon"></i>
+        Help me write
+      </button>
+    </div>
 
   </div>
 

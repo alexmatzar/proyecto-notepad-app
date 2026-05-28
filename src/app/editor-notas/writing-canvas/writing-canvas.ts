@@ -13,8 +13,7 @@ export class WritingCanvasComponent {
   isEmpty: boolean = true;
   typingTimer: any;
   
-  // NUEVO: Controla qué nota está cargada para no sobreescribir mientras escribes
-  currentLoadedNoteId: string | null = null; 
+  loadedNoteId: string | null = null; 
 
   @ViewChild('editor') editorElement!: ElementRef;
 
@@ -23,15 +22,15 @@ export class WritingCanvasComponent {
       const activeNote = this.noteService.getActiveNote();
       
       if (this.editorElement && activeNote) {
-        // SOLUCIÓN AL BUG: Solo sobreescribimos el HTML si cambiamos de documento
-        if (this.currentLoadedNoteId !== activeNote.id) {
+        // MAGIA AQUÍ: Solo ejecutamos esto si acabamos de cambiar de nota.
+        // Al encerrar el isEmpty aquí adentro, matamos el bug del cursor invertido.
+        if (this.loadedNoteId !== activeNote.id) {
            this.editorElement.nativeElement.innerHTML = activeNote.contenido;
-           this.currentLoadedNoteId = activeNote.id; // Actualizamos la referencia
+           this.loadedNoteId = activeNote.id;
+           this.isEmpty = this.editorElement.nativeElement.innerText.trim().length === 0;
         }
-        
-        this.isEmpty = this.editorElement.nativeElement.innerText.trim().length === 0;
       } else if (!activeNote) {
-        this.currentLoadedNoteId = null;
+        this.loadedNoteId = null;
       }
     });
   }
