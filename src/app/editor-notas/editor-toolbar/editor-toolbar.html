@@ -1,45 +1,81 @@
 <div class="toolbar-container" data-purpose="rich-text-toolbar">
   
   <div class="toolbar-group">
-    <button class="toolbar-btn"><i class="fa-solid fa-rotate-left"></i></button>
-    <button class="toolbar-btn disabled"><i class="fa-solid fa-rotate-right"></i></button>
+    <button class="toolbar-btn" (click)="undo()" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="toolbar-btn" (click)="redo()" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
   </div>
 
   <div class="toolbar-group relative">
     <button (click)="toggleDropdown('fontFamily', $event)" class="combobox-btn font-combobox">
-      <span class="combobox-label"><span class="font-serif italic font-bold">T</span> Arial</span>
+      <span class="combobox-label"><span class="font-serif italic font-bold">T</span> {{ selectedFont }}</span>
       <i class="fa-solid fa-chevron-down text-xs"></i>
     </button>
     @if (openDropdown === 'fontFamily') {
       <div class="dropdown-menu font-menu" (click)="preventClose($event)">
-        <button class="dropdown-item">Arial</button>
-        <button class="dropdown-item">Courier New</button>
-        <button class="dropdown-item">Georgia</button>
-        <button class="dropdown-item">Times New Roman</button>
-        <button class="dropdown-item">Trebuchet MS</button>
-        <button class="dropdown-item">Verdana</button>
+        <button class="dropdown-item" (click)="applyFont('Arial')">Arial</button>
+        <button class="dropdown-item" style="font-family: 'Courier New'" (click)="applyFont('Courier New')">Courier New</button>
+        <button class="dropdown-item" style="font-family: 'Georgia'" (click)="applyFont('Georgia')">Georgia</button>
+        <button class="dropdown-item" style="font-family: 'Times New Roman'" (click)="applyFont('Times New Roman')">Times New Roman</button>
+        <button class="dropdown-item" style="font-family: 'Trebuchet MS'" (click)="applyFont('Trebuchet MS')">Trebuchet MS</button>
+        <button class="dropdown-item" style="font-family: 'Verdana'" (click)="applyFont('Verdana')">Verdana</button>
       </div>
     }
   </div>
 
   <div class="toolbar-group relative">
     <button (click)="toggleDropdown('format', $event)" class="combobox-btn format-combobox">
-      <span class="combobox-label"><i class="fa-solid fa-bars-staggered"></i> Normal</span>
+      <span class="combobox-label"><i class="fa-solid fa-align-left"></i> {{ selectedFormat }}</span>
       <i class="fa-solid fa-chevron-down text-xs"></i>
     </button>
+    
     @if (openDropdown === 'format') {
-      <div class="dropdown-menu format-menu" (click)="preventClose($event)">
-        <button class="dropdown-item font-normal">Normal</button>
-        <button class="dropdown-item font-bold text-xl">Heading 1</button>
-        <button class="dropdown-item font-bold text-lg">Heading 2</button>
-        <button class="dropdown-item font-bold text-md">Heading 3</button>
-        <div class="dropdown-divider"></div>
-        <button class="dropdown-item"><i class="fa-solid fa-list-ol icon-fixed"></i> Numbered List</button>
-        <button class="dropdown-item"><i class="fa-solid fa-list-ul icon-fixed"></i> Bullet List</button>
-        <button class="dropdown-item"><i class="fa-solid fa-list-check icon-fixed"></i> Check List</button>
-        <div class="dropdown-divider"></div>
-        <button class="dropdown-item"><i class="fa-solid fa-quote-right icon-fixed"></i> Quote</button>
-        <button class="dropdown-item"><i class="fa-solid fa-code icon-fixed"></i> Code Block</button>
+      <div class="dropdown-menu format-menu" (click)="preventClose($event)" style="width: 250px;">
+        
+        <button class="dropdown-item flex justify-between items-center" (click)="applyFormat('P', 'Normal')">
+          <span><i class="fa-solid fa-align-left icon-fixed"></i> Normal</span>
+          <span class="text-xs text-gray-400">Ctrl+Alt+0</span>
+        </button>
+        
+        <button class="dropdown-item flex justify-between items-center" (click)="applyFormat('H1', 'Heading 1')">
+          <span><span class="icon-fixed font-bold text-gray-500">H1</span> Heading 1</span>
+          <span class="text-xs text-gray-400">Ctrl+Alt+1</span>
+        </button>
+        
+        <button class="dropdown-item flex justify-between items-center" (click)="applyFormat('H2', 'Heading 2')">
+          <span><span class="icon-fixed font-bold text-gray-500">H2</span> Heading 2</span>
+          <span class="text-xs text-gray-400">Ctrl+Alt+2</span>
+        </button>
+        
+        <button class="dropdown-item flex justify-between items-center" (click)="applyFormat('H3', 'Heading 3')">
+          <span><span class="icon-fixed font-bold text-gray-500">H3</span> Heading 3</span>
+          <span class="text-xs text-gray-400">Ctrl+Alt+3</span>
+        </button>
+
+        <button class="dropdown-item flex justify-between items-center" (click)="applyList('insertOrderedList')">
+          <span><i class="fa-solid fa-list-ol icon-fixed"></i> Numbered List</span>
+          <span class="text-xs text-gray-400">Ctrl+Shift+7</span>
+        </button>
+        
+        <button class="dropdown-item flex justify-between items-center" (click)="applyList('insertUnorderedList')">
+          <span><i class="fa-solid fa-list-ul icon-fixed"></i> Bullet List</span>
+          <span class="text-xs text-gray-400">Ctrl+Shift+8</span>
+        </button>
+        
+        <button class="dropdown-item flex justify-between items-center" (click)="applyChecklist()">
+          <span><i class="fa-regular fa-square-check icon-fixed"></i> Check List</span>
+          <span class="text-xs text-gray-400">Ctrl+Shift+9</span>
+        </button>
+
+        <button class="dropdown-item flex justify-between items-center" (click)="applyFormat('BLOCKQUOTE', 'Quote')">
+          <span><i class="fa-solid fa-quote-right icon-fixed"></i> Quote</span>
+          <span class="text-xs text-gray-400">Ctrl+Shift+Q</span>
+        </button>
+        
+        <button class="dropdown-item flex justify-between items-center" (click)="applyFormat('PRE', 'Code Block')">
+          <span><i class="fa-solid fa-code icon-fixed"></i> Code Block</span>
+          <span class="text-xs text-gray-400">Ctrl+Alt+C</span>
+        </button>
+
       </div>
     }
   </div>

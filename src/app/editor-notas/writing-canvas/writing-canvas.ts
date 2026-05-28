@@ -11,35 +11,43 @@ import { NoteService } from '../../services/note';
 export class WritingCanvasComponent {
   public noteService = inject(NoteService);
   isEmpty: boolean = true;
-  
   typingTimer: any;
+  
+  // NUEVO: Controla qué nota está cargada para no sobreescribir mientras escribes
+  currentLoadedNoteId: string | null = null; 
 
   @ViewChild('editor') editorElement!: ElementRef;
 
   constructor() {
     effect(() => {
       const activeNote = this.noteService.getActiveNote();
+      
       if (this.editorElement && activeNote) {
-        if (this.editorElement.nativeElement.innerText.trim() !== activeNote.contenido.trim()) {
-           this.editorElement.nativeElement.innerText = activeNote.contenido;
+        // SOLUCIÓN AL BUG: Solo sobreescribimos el HTML si cambiamos de documento
+        if (this.currentLoadedNoteId !== activeNote.id) {
+           this.editorElement.nativeElement.innerHTML = activeNote.contenido;
+           this.currentLoadedNoteId = activeNote.id; // Actualizamos la referencia
         }
-        this.isEmpty = activeNote.contenido.trim().length === 0;
+        
+        this.isEmpty = this.editorElement.nativeElement.innerText.trim().length === 0;
+      } else if (!activeNote) {
+        this.currentLoadedNoteId = null;
       }
     });
   }
 
   onInput(event: Event) {
     const target = event.target as HTMLElement;
-    const content = target.innerText;
+    const htmlContent = target.innerHTML;
+    const plainText = target.innerText.trim();
     
-    this.isEmpty = content.trim().length === 0;
+    this.isEmpty = plainText.length === 0;
     
-    this.noteService.updateActiveNoteContent(content);
+    this.noteService.updateActiveNoteContent(htmlContent);
 
     clearTimeout(this.typingTimer);
-    
     this.typingTimer = setTimeout(() => {
-      this.noteService.handleAFKState(content);
+      this.noteService.handleAFKState(htmlContent);
     }, 1000);
   }
 
