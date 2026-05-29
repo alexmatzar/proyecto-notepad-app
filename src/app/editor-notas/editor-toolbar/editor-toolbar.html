@@ -1,8 +1,8 @@
 <div class="toolbar-container" data-purpose="rich-text-toolbar">
   
   <div class="toolbar-group">
-    <button class="toolbar-btn" (click)="undo()" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
-    <button class="toolbar-btn" (click)="redo()" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
+    <button class="toolbar-btn" (mousedown)="keepFocus($event)" (click)="undo()" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="toolbar-btn" (mousedown)="keepFocus($event)" (click)="redo()" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
   </div>
 
   <div class="toolbar-group relative">
@@ -90,7 +90,12 @@
       <i class="fa-solid fa-minus text-xs"></i>
     </button>
     
-    <span class="font-size-label">{{ displayFontSize }}</span>
+    <input type="number" 
+           class="font-size-input" 
+           [value]="currentFontSize" 
+           (focus)="onFontSizeFocus()"
+           (change)="onFontSizeManualChange($event)"
+           min="8" max="72" title="Font size" />
     
     <button class="toolbar-btn small-btn" 
             (mousedown)="keepFocus($event)" 
@@ -101,17 +106,17 @@
 
   <div class="toolbar-group">
     <button class="toolbar-btn font-bold" 
-            [style.backgroundColor]="isBold ? '#e5e7eb' : 'transparent'" 
+            [style.backgroundColor]="isBold ? 'var(--btn-hover)' : 'transparent'" 
             (mousedown)="keepFocus($event)" 
             (click)="executeCommand('bold')">B</button>
             
     <button class="toolbar-btn italic font-serif" 
-            [style.backgroundColor]="isItalic ? '#e5e7eb' : 'transparent'" 
+            [style.backgroundColor]="isItalic ? 'var(--btn-hover)' : 'transparent'" 
             (mousedown)="keepFocus($event)" 
             (click)="executeCommand('italic')">I</button>
             
     <button class="toolbar-btn underline" 
-            [style.backgroundColor]="isUnderline ? '#e5e7eb' : 'transparent'" 
+            [style.backgroundColor]="isUnderline ? 'var(--btn-hover)' : 'transparent'" 
             (mousedown)="keepFocus($event)" 
             (click)="executeCommand('underline')">U</button>
             

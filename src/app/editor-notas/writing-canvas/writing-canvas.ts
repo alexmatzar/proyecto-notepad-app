@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, inject, effect } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, effect, AfterViewInit } from '@angular/core';
 import { NoteService } from '../../services/note';
 
 @Component({
@@ -8,51 +8,86 @@ import { NoteService } from '../../services/note';
   templateUrl: './writing-canvas.html',
   styleUrl: './writing-canvas.css'
 })
-export class WritingCanvasComponent {
+export class WritingCanvasComponent implements AfterViewInit {
   public noteService = inject(NoteService);
   isEmpty: boolean = true;
   typingTimer: any;
-  
   loadedNoteId: string | null = null; 
 
-  @ViewChild('editor') editorElement!: ElementRef;
+  wordCount: number = 0;
+  charCount: number = 0;
+
+  @ViewChild('editor', { static: true }) editorElement!: ElementRef;
 
   constructor() {
     effect(() => {
       const activeNote = this.noteService.getActiveNote();
       
       if (this.editorElement && activeNote) {
-        // MAGIA AQUÍ: Solo ejecutamos esto si acabamos de cambiar de nota.
-        // Al encerrar el isEmpty aquí adentro, matamos el bug del cursor invertido.
         if (this.loadedNoteId !== activeNote.id) {
            this.editorElement.nativeElement.innerHTML = activeNote.contenido;
            this.loadedNoteId = activeNote.id;
-           this.isEmpty = this.editorElement.nativeElement.innerText.trim().length === 0;
+
+           const rawText = this.editorElement.nativeElement.innerText || '';
+           this.isEmpty = rawText.trim().length === 0;
+           this.updateCounts(rawText);
         }
       } else if (!activeNote) {
         this.loadedNoteId = null;
+        this.wordCount = 0;
+        this.charCount = 0;
       }
     });
   }
 
-  onInput(event: Event) {
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.focusEditor();
+    }, 100);
+  }
+
+onInput(event: Event) {
     const target = event.target as HTMLElement;
     const htmlContent = target.innerHTML;
-    const plainText = target.innerText.trim();
-    
+    const rawText = target.innerText;
+    const cleanedText = rawText.replace(/\u200B/g, '');
+    const plainText = cleanedText.trim();
     this.isEmpty = plainText.length === 0;
-    
+    this.updateCounts(cleanedText);
     this.noteService.updateActiveNoteContent(htmlContent);
 
     clearTimeout(this.typingTimer);
     this.typingTimer = setTimeout(() => {
-      this.noteService.handleAFKState(htmlContent);
+      const htmlSinFantasma = htmlContent.replace(/&#8203;/g, '').replace(/\u200B/g, '');
+      this.noteService.handleAFKState(htmlSinFantasma);
     }, 1000);
   }
 
+  updateCounts(text: string) {
+    this.charCount = text.length; 
+    const trimmed = text.trim();
+    this.wordCount = trimmed.length > 0 ? trimmed.split(/\s+/).length : 0;
+  }
+
   focusEditor() {
-    if (this.editorElement) {
-      this.editorElement.nativeElement.focus();
+    if (!this.editorElement) return;
+    const el = this.editorElement.nativeElement;
+
+    if (document.activeElement === el) {
+      return; 
+    }
+
+    el.focus();
+
+    if (el.innerText.trim().length > 0) {
+      const range = document.createRange();
+      const sel = window.getSelection();
+      if (sel) {
+        range.selectNodeContents(el);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
     }
   }
 }

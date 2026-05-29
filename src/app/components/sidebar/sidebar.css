@@ -5,15 +5,14 @@
 
 .sidebar {
   height: 100%;
-  background: white;
-  border-right: 1px solid #e5e7eb;
+  background-color: var(--bg-surface);
+  border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   padding: 1rem 0;
   box-shadow: 2px 0 5px -2px rgba(0, 0, 0, 0.05);
   overflow: hidden;
   transition: width 0.1s ease;
-
   width: 48px;
   align-items: center;
 }
@@ -29,7 +28,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6b7280;
+  color: var(--text-muted);
   border-radius: 0.5rem;
   cursor: pointer;
   transition: background-color 0.15s, color 0.15s;
@@ -38,9 +37,10 @@
   border: none;
   flex-shrink: 0;
 }
-.sidebar-btn:hover { background-color: #f3f4f6; }
+.sidebar-btn:hover { background-color: var(--btn-hover); }
 .sidebar-btn.active {
-  background-color: #eff6ff;
+  background-color: var(--btn-hover);
+  color: var(--text-main);
 }
 
 .panel-content {
@@ -56,8 +56,8 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #0ea5e9;
-  color: white;
+  background-color: #CAEBFF;
+  color: #236BA2;
   font-size: 0.875rem;
   font-weight: 500;
   padding: 0.5rem 1rem;
@@ -67,12 +67,13 @@
   transition: background-color 0.15s;
   margin-bottom: 0.75rem;
 }
-.panel-new-btn:hover { background-color: #0284c7; }
+.panel-new-btn:hover { opacity: 0.8; }
+.panel-new-btn i { color: #236BA2; }
 
 .panel-section-label {
   font-size: 0.7rem;
   font-weight: 600;
-  color: #9ca3af;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 0 0.75rem;
@@ -86,7 +87,7 @@
   padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
   font-size: 0.875rem;
-  color: #374151;
+  color: var(--text-main);
   background: transparent;
   border: none;
   cursor: pointer;
@@ -94,21 +95,21 @@
   transition: background-color 0.15s;
   width: 100%;
 }
-.panel-row:hover { background-color: #f3f4f6; }
+.panel-row:hover { background-color: var(--btn-hover); }
 .panel-row.active-note {
-  background-color: #f3f4f6;
+  background-color: var(--btn-hover);
   font-weight: 500;
 }
 
 .panel-row i {
-  color: #9ca3af;
+  color: var(--text-muted);
   width: 16px;
   text-align: center;
 }
 
 .panel-divider {
   height: 1px;
-  background: #f3f4f6;
+  background-color: var(--border-color);
   margin: 0.5rem 0.75rem;
 }
 
@@ -202,7 +203,7 @@
   right: 0.5rem;
   background: transparent;
   border: none;
-  color: #9ca3af;
+  color: var(--text-muted);
   font-size: 0.875rem;
   padding: 0.3rem;
   border-radius: 4px;
@@ -212,36 +213,32 @@
   transition: all 0.2s;
 }
 
-/* Muestra el basurero al pasar el ratón por toda la fila */
 .note-item-wrapper:hover .trash-hover-btn {
   opacity: 1;
   visibility: visible;
 }
 
-/* Se pone rojo si el cursor toca directamente el basurero */
 .trash-hover-btn:hover {
   color: #ef4444; 
 }
 
-/* ========================================= */
-/* ESTILOS DEL MODAL DE CONFIRMACIÓN         */
-/* ========================================= */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999; /* Por encima de todo */
+  z-index: 9999;
 }
 
 .modal-box {
-  background-color: #ffffff;
-  border-radius: 8px;
+  background-color: var(--bg-surface);
+  border-radius: 8px; padding: 24px; width: 400px; max-width: 90%;
+  border: 1px solid var(--border-color);
   padding: 24px;
   width: 400px;
   max-width: 90%;
@@ -253,13 +250,13 @@
   margin: 0 0 8px 0;
   font-size: 1.125rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-main);
 }
 
 .modal-desc {
   margin: 0 0 24px 0;
   font-size: 0.875rem;
-  color: #4b5563;
+  color: var(--text-muted);
 }
 
 .modal-actions {
@@ -278,12 +275,12 @@
 }
 
 .cancel-btn {
-  background-color: #ffffff;
-  border: 1px solid #d1d5db;
-  color: #374151;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
 }
 .cancel-btn:hover {
-  background-color: #f9fafb;
+  background-color: var(--btn-hover);
 }
 
 .delete-confirm-btn {

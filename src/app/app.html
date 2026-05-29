@@ -1,7 +1,6 @@
-<app-top-nav (hamburgerClick)="onHamburgerClick()" />
+<app-top-nav (hamburgerClick)="onHamburgerClick()" [isDarkMode]="isDarkMode()" (themeToggleClick)="toggleTheme()"/>
 
-<main class="flex-1 flex overflow-hidden bg-[#f8f9fa]" data-purpose="main-content">
-
+<main class="flex-1 flex overflow-hidden" data-purpose="main-content">
   <app-sidebar
     [activeView]="activeView()"
     [isPinned]="sidebarPinned()"
@@ -10,5 +9,4 @@
   @if (activeView() === 'notes') {
     <app-editor-notas />
   }
-
 </main>

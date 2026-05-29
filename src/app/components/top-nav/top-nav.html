@@ -1,5 +1,4 @@
 <header class="top-nav-header" data-purpose="top-navigation">
-  
   <div class="left-section">
     <button class="hamburger-btn" (click)="onHamburger()">
       <i class="fa-solid fa-bars"></i>
@@ -37,8 +36,12 @@
     </div>
 
     <div class="actions-group">
-      <button class="action-btn">
-        <i class="fa-regular fa-moon"></i>
+      <button class="action-btn" (click)="onToggleTheme()">
+        @if (isDarkMode) {
+          <i class="fa-solid fa-sun text-yellow-400"></i>
+        } @else {
+          <i class="fa-regular fa-moon"></i>
+        }
       </button>
       <button class="action-btn">
         <i class="fa-solid fa-headphones"></i>
@@ -48,5 +51,4 @@
       </button>
     </div>
   </div>
-
 </header>

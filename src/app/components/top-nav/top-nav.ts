@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Output, EventEmitter, inject, Input } from '@angular/core';
 import { NoteService } from '../../services/note';
 
 @Component({
@@ -9,6 +9,8 @@ import { NoteService } from '../../services/note';
 })
 export class TopNavComponent {
   @Output() hamburgerClick = new EventEmitter<void>();
+  @Output() themeToggleClick = new EventEmitter<void>();
+  @Input() isDarkMode: boolean = false;
 
 public noteService = inject(NoteService);
 
@@ -16,9 +18,12 @@ public noteService = inject(NoteService);
     this.hamburgerClick.emit();
   }
 
-  // Evento que se dispara cada vez que el usuario escribe en el input del titulo
+  onToggleTheme() {
+    this.themeToggleClick.emit();
+  }
+
   onTitleChange(event: Event) {
     const input = event.target as HTMLInputElement;
     this.noteService.updateActiveNoteTitle(input.value);
   }
-} 
+}
