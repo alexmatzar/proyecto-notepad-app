@@ -17,19 +17,29 @@
         Help me write
       </button>
     </div>
-
   </div>
-
 </div>
 
 <div class="bottom-actions-right" data-purpose="bottom-right-actions">
-  <button class="action-btn"><i class="fa-regular fa-copy"></i></button>
-  <button class="action-btn"><i class="fa-solid fa-download"></i></button>
-  <button class="action-btn delete-btn"><i class="fa-regular fa-trash-can"></i></button>
+  
+  <button class="action-btn" [class.disabled-btn]="isEmpty" (mousedown)="$event.preventDefault()" (click)="copyToClipboard()">
+    @if (isCopied) {
+      <i class="fa-solid fa-check text-green-500"></i>
+    } @else {
+      <i class="fa-regular fa-copy"></i>
+    }
+  </button>
+
+  <button class="action-btn" [class.disabled-btn]="isEmpty" (mousedown)="$event.preventDefault()" (click)="openDownloadModal()">
+    <i class="fa-solid fa-download"></i>
+  </button>
+
+  <button class="action-btn delete-btn" [class.disabled-btn]="isEmpty" (mousedown)="$event.preventDefault()" (click)="openClearModal()">
+    <i class="fa-regular fa-trash-can"></i>
+  </button>
 </div>
 
 <div class="bottom-actions-left" data-purpose="bottom-left-actions">
-  
   @if (isEmpty) {
     <button class="upload-btn">
       <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload Doc
@@ -39,5 +49,72 @@
       Words: {{ wordCount }} Characters: {{ charCount }}
     </span>
   }
-
 </div>
+
+@if (showClearModal) {
+  <div class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Clear Editor</h3>
+        <button class="close-x-btn" (click)="cancelClear()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <p class="modal-desc">Are you sure you want to clear the editor?</p>
+      
+      <div class="modal-actions">
+        <button class="modal-btn cancel-btn" (click)="cancelClear()">Cancel</button>
+        <button class="modal-btn delete-confirm-btn" (click)="confirmClear()">Clear</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (showDownloadModal) {
+  <div class="modal-overlay top-modal">
+    <div class="modal-box download-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Download Your Notes</h3>
+        <button class="close-x-btn" (click)="closeDownloadModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <p class="modal-desc">Please Select the File Type of download your notes</p>
+      
+      <div class="format-cards-container">
+        
+        <div class="format-card" [class.selected]="selectedFormat === 'TEXT'" (click)="selectDownloadFormat('TEXT')">
+          <div class="radio-indicator"></div>
+          <div class="format-icon blue-icon">
+            <i class="fa-solid fa-file-lines"></i>
+          </div>
+          <div class="format-label">TEXT</div>
+        </div>
+
+        <div class="format-card" [class.selected]="selectedFormat === 'PDF'" (click)="selectDownloadFormat('PDF')">
+          <div class="radio-indicator"></div>
+          <div class="format-icon red-icon">
+            <i class="fa-solid fa-file-pdf"></i>
+          </div>
+          <div class="format-label">PDF</div>
+        </div>
+
+        <div class="format-card" [class.selected]="selectedFormat === 'WORD'" (click)="selectDownloadFormat('WORD')">
+          <div class="radio-indicator"></div>
+          <div class="format-icon blue-word-icon">
+            <i class="fa-solid fa-file-word"></i>
+          </div>
+          <div class="format-label">WORD</div>
+        </div>
+
+      </div>
+
+      <div class="modal-actions download-actions">
+        <button class="dismiss-text-btn" (click)="closeDownloadModal()">Dismiss</button>
+        <button class="black-download-btn" (click)="executeDownload()">
+          Download <i class="fa-solid fa-arrow-down-to-line ml-1"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+}

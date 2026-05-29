@@ -1,5 +1,8 @@
-import { Component, ElementRef, ViewChild, inject, effect, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, effect, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { NoteService } from '../../services/note';
+
+declare var pdfMake: any;
+declare var htmlToPdfmake: any;
 
 @Component({
   selector: 'app-writing-canvas',
@@ -10,12 +13,21 @@ import { NoteService } from '../../services/note';
 })
 export class WritingCanvasComponent implements AfterViewInit {
   public noteService = inject(NoteService);
+
+  private cdr = inject(ChangeDetectorRef);
+
   isEmpty: boolean = true;
   typingTimer: any;
   loadedNoteId: string | null = null; 
 
   wordCount: number = 0;
   charCount: number = 0;
+
+  isCopied: boolean = false;
+  showClearModal: boolean = false;
+
+  showDownloadModal: boolean = false;
+  selectedFormat: 'TEXT' | 'PDF' | 'WORD' = 'TEXT';
 
   @ViewChild('editor', { static: true }) editorElement!: ElementRef;
 
@@ -46,12 +58,14 @@ export class WritingCanvasComponent implements AfterViewInit {
     }, 100);
   }
 
-onInput(event: Event) {
+  onInput(event: Event) {
     const target = event.target as HTMLElement;
     const htmlContent = target.innerHTML;
     const rawText = target.innerText;
+
     const cleanedText = rawText.replace(/\u200B/g, '');
     const plainText = cleanedText.trim();
+
     this.isEmpty = plainText.length === 0;
     this.updateCounts(cleanedText);
     this.noteService.updateActiveNoteContent(htmlContent);
@@ -67,6 +81,114 @@ onInput(event: Event) {
     this.charCount = text.length; 
     const trimmed = text.trim();
     this.wordCount = trimmed.length > 0 ? trimmed.split(/\s+/).length : 0;
+  }
+
+  copyToClipboard() {
+    if (this.isEmpty || !this.editorElement) return;
+
+    // Solo obtenemos el texto
+    const textToCopy = this.editorElement.nativeElement.innerText;
+    
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      this.isCopied = true;
+      this.cdr.detectChanges(); // Angular pinta el Check al instante
+      // Cuenta regresiva de 2 segundos exactos
+      setTimeout(() => {
+        this.isCopied = false;
+        this.cdr.detectChanges();
+      }, 2000);
+    }).catch(err => {
+      console.error("Error al copiar al portapapeles:", err);
+    });
+  }
+
+  openClearModal() {
+    if (this.isEmpty) return;
+    this.showClearModal = true;
+  }
+
+  cancelClear() {
+    this.showClearModal = false;
+  }
+
+  confirmClear() {
+    if (this.editorElement) {
+      this.editorElement.nativeElement.innerHTML = '';
+      this.editorElement.nativeElement.dispatchEvent(new Event('input', { bubbles: true }));
+      this.showClearModal = false;
+      this.focusEditor();
+    }
+  }
+
+  openDownloadModal() {
+    if (this.isEmpty) return;
+    this.showDownloadModal = true;
+    this.selectedFormat = 'TEXT'; // Restablecer el formato por defecto
+  }
+
+  closeDownloadModal() {
+    this.showDownloadModal = false;
+  }
+
+  selectDownloadFormat(format: 'TEXT' | 'PDF' | 'WORD') {
+    this.selectedFormat = format;
+  }
+
+  executeDownload() {
+    if (!this.editorElement || this.isEmpty) return;
+    
+    const activeNote = this.noteService.getActiveNote();
+    let fileName = activeNote ? activeNote.titulo : 'Untitled Document';
+    fileName = fileName.replace(/[\\/:*?"<>|]/g, '');
+
+    if (this.selectedFormat === 'PDF') {
+      // Tomamos el HTML y le limpiamos los caracteres invisibles
+      let rawHtml = this.editorElement.nativeElement.innerHTML;
+      rawHtml = rawHtml.replace(/&#8203;/g, '').replace(/\u200B/g, '');
+
+      // Convertimos el HTML a comandos de dibujo para el PDF
+      const pdfMakeContent = htmlToPdfmake(rawHtml, { window: window });
+
+      // Configuramos la hoja
+      const docDefinition = {
+        content: pdfMakeContent,
+        defaultStyle: {
+          fontSize: 12
+        },
+        pageMargins: [ 40, 40, 40, 40 ] // Márgenes estéticos
+      };
+
+      // Se genera el PDF real y se lanza la descarga
+      pdfMake.createPdf(docDefinition).download(`${fileName}.pdf`);
+      
+      this.closeDownloadModal();
+      return; 
+    }
+
+    // TXT O WORD
+    const rawText = this.editorElement.nativeElement.innerText;
+    let contentToDownload = rawText;
+    let mimeType = 'text/plain';
+    let extension = '.txt';
+
+    if (this.selectedFormat === 'WORD') {
+      const htmlContent = this.editorElement.nativeElement.innerHTML;
+      contentToDownload = `<html><head><meta charset='utf-8'></head><body>${htmlContent}</body></html>`;
+      mimeType = 'application/msword';
+      extension = '.doc';
+    }
+
+    const blob = new Blob([contentToDownload], { type: mimeType });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${fileName}${extension}`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+
+    this.closeDownloadModal();
   }
 
   focusEditor() {

@@ -127,3 +127,241 @@
 .upload-btn:hover {
   color: var(--text-main);
 }
+
+/* ========================================= */
+/* ESTADO DESHABILITADO PARA BOTONES         */
+/* ========================================= */
+.disabled-btn {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none; /* Bloquea los clics */
+}
+
+/* ========================================= */
+/* ESTILOS DEL MODAL DE CLEAR EDITOR         */
+/* ========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-box {
+  background-color: var(--bg-surface);
+  border-radius: 8px;
+  padding: 24px;
+  width: 400px;
+  max-width: 90%;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  animation: modalPop 0.2s ease-out;
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.close-x-btn {
+  background-color: var(--border-color); /* Círculo gris sutil */
+  color: var(--text-main);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: opacity 0.2s;
+}
+.close-x-btn:hover {
+  opacity: 0.8;
+}
+
+.modal-desc {
+  margin: 0 0 24px 0;
+  font-size: 0.875rem;
+  color: var(--text-main);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal-btn {
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.cancel-btn {
+  background-color: var(--border-color);
+  color: var(--text-main);
+}
+.cancel-btn:hover {
+  opacity: 0.8;
+}
+
+.delete-confirm-btn {
+  background-color: #ff4d4f; /* Color rosado/rojo igual a la imagen */
+  color: #ffffff;
+}
+.delete-confirm-btn:hover {
+  background-color: #ff7875;
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ========================================= */
+/* POSICIONAMIENTOS DE LOS MODALES           */
+/* ========================================= */
+.centered-modal {
+  align-items: center; /* Centrado vertical perfecto (Clear Editor) */
+}
+
+.top-modal {
+  align-items: flex-start; /* Se va para arriba */
+  padding-top: 80px; /* Ligeramente despegado del techo */
+}
+
+.download-box {
+  width: 450px !important;
+  max-width: 95%;
+}
+
+/* ========================================= */
+/* TARJETAS DE SELECCIÓN DE FORMATO          */
+/* ========================================= */
+.format-cards-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.format-card {
+  flex: 1;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+  background-color: var(--bg-surface);
+}
+
+.format-card:hover {
+  border-color: #9ca3af;
+}
+
+/* Estado Seleccionado */
+.format-card.selected {
+  border: 1px solid #0ea5e9; /* Borde azul celeste */
+}
+
+/* El botoncito de Radio Circular */
+.radio-indicator {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #d1d5db; /* Gris inactivo */
+  transition: background-color 0.2s;
+}
+.format-card.selected .radio-indicator {
+  background-color: #0ea5e9; /* Azul celeste activo */
+}
+
+/* Iconos de colores idénticos a las fotos */
+.format-icon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.blue-icon { color: #60a5fa; } /* Azul claro para TEXT */
+.red-icon { color: #ef4444; }  /* Rojo para PDF */
+.blue-word-icon { color: #2563eb; } /* Azul oscuro para WORD */
+
+.format-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.05em;
+}
+
+/* ========================================= */
+/* BOTONES INFERIORES DEL MODAL DE DESCARGA  */
+/* ========================================= */
+.download-actions {
+  display: flex;
+  justify-content: space-between !important;
+  align-items: center;
+}
+
+.dismiss-text-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 8px;
+}
+.dismiss-text-btn:hover {
+  color: var(--text-main);
+}
+
+.black-download-btn {
+  background-color: var(--text-main);
+  color: var(--bg-surface);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s;
+}
+.black-download-btn:hover {
+  opacity: 0.8;
+}
+.black-download-btn .ml-1 {
+  margin-left: 6px;
+}
