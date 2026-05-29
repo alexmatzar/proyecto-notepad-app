@@ -1,15 +1,15 @@
 .toolbar-container {
   height: 56px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   padding: 0 16px;
   gap: 8px;
-  background-color: #ffffff;
+  background-color: var(--bg-surface);
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
   z-index: 50;
-  overflow: visible; /* Permite que los dropdowns se salgan de la barra */
+  overflow: visible;
   flex-shrink: 0;
 }
 
@@ -17,7 +17,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  border-right: 1px solid #e5e7eb;
+  border-right: 1px solid var(--border-color);
   padding-right: 8px;
   margin-right: 4px;
   flex-shrink: 0;
@@ -31,13 +31,10 @@
   position: relative;
 }
 
-/* ========================================= */
-/* BOTONES NORMALES DE LA BARRA              */
-/* ========================================= */
 .toolbar-btn {
   background: transparent;
   border: none;
-  color: #374151;
+  color: var(--text-main);
   padding: 8px;
   border-radius: 4px;
   cursor: pointer;
@@ -46,21 +43,18 @@
   align-items: center;
   justify-content: center;
 }
-.toolbar-btn:hover { background-color: #f3f4f6; }
+.toolbar-btn:hover { background-color: var(--btn-hover); }
 .toolbar-btn.disabled { opacity: 0.5; cursor: not-allowed; }
 .small-btn { padding: 6px; }
 .flex-btn { gap: 4px; padding: 6px 8px; font-size: 0.875rem; }
-.font-size-label { font-size: 0.875rem; padding: 0 8px; color: #374151; }
+.font-size-label { font-size: 0.875rem; padding: 0 8px; color: var(--text-main); }
 
-/* ========================================= */
-/* COMBOBOXES (LOS BOTONES LARGOS)           */
-/* ========================================= */
 .combobox-btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 6px 8px;
-  color: #374151;
+  color: var(--text-main);
   background: transparent;
   border: none;
   border-radius: 4px;
@@ -68,26 +62,23 @@
   cursor: pointer;
   transition: background-color 0.2s;
 }
-.combobox-btn:hover { background-color: #f3f4f6; }
+.combobox-btn:hover { background-color: var(--btn-hover); }
 .combobox-label { display: flex; align-items: center; gap: 8px; }
 
-/* --- TAMAÑOS DE LOS COMBOBOXES DE LA BARRA --- */
-.font-combobox   { min-width: 170px; } /* <-- Cambia este valor para la Fuente */
-.format-combobox { min-width: 150px; } /* <-- Cambia este valor para Normal/Headings */
+/* TAMAÑOS DE LOS COMBOBOXES DE LA BARRA */
+.font-combobox   { min-width: 170px; }
+.format-combobox { min-width: 150px; }
 .insert-combobox { min-width: 120px; }  
 .align-combobox  { min-width: 120px; } 
 
-
-/* ========================================= */
 /* MENÚS DESPLEGABLES (DROPDOWNS)            */
-/* ========================================= */
 .dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
   margin-top: 4px;
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   padding: 4px 0;
@@ -108,17 +99,17 @@
   text-align: left;
   padding: 8px 16px;
   font-size: 0.875rem;
-  color: #374151;
+  color: var(--text-main);
   background: transparent;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
 }
-.dropdown-item:hover { background-color: #f3f4f6; }
+.dropdown-item:hover { background-color: var(--btn-hover) }
 
 .dropdown-divider {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
   margin: 4px 0;
 }
 
@@ -126,26 +117,25 @@
   width: 20px;
   text-align: center;
   margin-right: 8px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
-/* ========================================= */
-/* INPUT DE TAMAÑO DE FUENTE                 */
-/* ========================================= */
+/* INPUT DE TAMAÑO DE FUENTE */
+
 .font-size-input {
   width: 40px;
   text-align: center;
   border: 1px solid transparent;
   font-size: 0.875rem;
-  color: #374151;
+  color: var(--text-main);
   outline: none;
   background: transparent;
   border-radius: 4px;
   padding: 4px;
 }
 .font-size-input:hover, .font-size-input:focus {
-  border-color: #e5e7eb;
-  background: #f9fafb;
+  border-color: var(--border-color);
+  background-color: var(--bg-app);
 }
 /* Oculta las flechas del input en Chrome/Safari */
 .font-size-input::-webkit-outer-spin-button,

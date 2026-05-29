@@ -10,7 +10,7 @@
   overflow: auto;
   padding: 2rem 3rem; /* Espaciado interno cómodo (p-8) */
   position: relative;
-  color: #1f2937;
+  color: var(--text-main);
   font-size: 1.125rem;
 }
 
@@ -40,28 +40,27 @@
 }
 
 .hint-text {
-  color: #9ca3af;
-  margin-bottom: 1.5rem; /* Separación exacta con el botón */
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
 }
 
-/* El botón de IA */
 .help-write-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   border-radius: 9999px;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
-  color: #374151;
+  color: var(--text-main);
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .help-write-btn:hover {
-  background-color: #f9fafb;
+  background-color: var(--btn-hover);
 }
 
 .magic-icon {
@@ -87,22 +86,19 @@
 .action-btn {
   width: 2.5rem;
   height: 2.5rem;
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   border-radius: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6b7280;
+  color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.action-btn:hover {
-  background-color: #f9fafb;
-  color: #374151;
-}
+.action-btn:hover { background-color: var(--btn-hover); color: var(--text-main); }
 
 .delete-btn:hover {
   color: #ef4444; 
@@ -119,7 +115,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #6b7280;
+  color: var(--text-muted);
   font-size: 0.875rem;
   font-weight: 500;
   background: transparent;
@@ -129,5 +125,5 @@
 }
 
 .upload-btn:hover {
-  color: #374151;
+  color: var(--text-main);
 }

@@ -106,17 +106,17 @@
 
   <div class="toolbar-group">
     <button class="toolbar-btn font-bold" 
-            [style.backgroundColor]="isBold ? '#e5e7eb' : 'transparent'" 
+            [style.backgroundColor]="isBold ? 'var(--btn-hover)' : 'transparent'" 
             (mousedown)="keepFocus($event)" 
             (click)="executeCommand('bold')">B</button>
             
     <button class="toolbar-btn italic font-serif" 
-            [style.backgroundColor]="isItalic ? '#e5e7eb' : 'transparent'" 
+            [style.backgroundColor]="isItalic ? 'var(--btn-hover)' : 'transparent'" 
             (mousedown)="keepFocus($event)" 
             (click)="executeCommand('italic')">I</button>
             
     <button class="toolbar-btn underline" 
-            [style.backgroundColor]="isUnderline ? '#e5e7eb' : 'transparent'" 
+            [style.backgroundColor]="isUnderline ? 'var(--btn-hover)' : 'transparent'" 
             (mousedown)="keepFocus($event)" 
             (click)="executeCommand('underline')">U</button>
             
