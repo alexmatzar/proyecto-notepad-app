@@ -15,13 +15,20 @@
       </div>
     </div>
 
-    <div class="doc-title-wrapper">
+    <div class="doc-title-wrapper flex items-center">
       <input
         class="doc-title-input"
         placeholder="Untitled Document"
         type="text"
         [value]="noteService.getActiveNote()?.titulo === 'Untitled Document' ? '' : noteService.getActiveNote()?.titulo"
         (input)="onTitleChange($event)" />
+        
+      <span class="text-xs italic ml-3" 
+            [class.text-gray-400]="!isDarkMode"
+            [class.text-gray-500]="isDarkMode"
+            style="transition: color 0.3s ease;">
+        {{ noteService.syncStatus() }}
+      </span>
     </div>
   </div>
 

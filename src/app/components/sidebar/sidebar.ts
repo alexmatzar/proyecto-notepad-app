@@ -36,7 +36,7 @@ export class SidebarComponent {
 
   // Crear nota llamando al servicio
   createNewNote() {
-    this.noteService.createNote();
+    this.noteService.crearunaNota();
   }
 
   // Seleccionar nota llamando al servicio
@@ -59,7 +59,7 @@ export class SidebarComponent {
 
   executeDelete() {
     if (this.noteToDelete) {
-      this.noteService.deleteNote(this.noteToDelete.id);
+      this.noteService.borrarNota(this.noteToDelete.id);
       this.cancelDelete(); // Cerramos y limpiamos
     }
   }
