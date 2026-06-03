@@ -159,3 +159,23 @@
     height: 32px;
   }
 }
+
+@media (max-width: 768px) {
+  .brand-text { display: none; }
+  .search-box { display: none; }
+  
+  .doc-title-wrapper { 
+    margin-left: 10px; 
+    flex: 1;
+  }
+  
+  .doc-title-input { 
+    width: 100%; 
+    min-width: 100px; 
+  }
+  
+  .action-btn { 
+    width: 32px; 
+    height: 32px;
+  }
+}

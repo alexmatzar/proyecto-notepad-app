@@ -143,3 +143,18 @@
   -webkit-appearance: none;
   margin: 0;
 }
+
+@media (max-width: 768px) {
+  .toolbar-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    justify-content: flex-start;
+    padding-bottom: 4px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .toolbar-container::-webkit-scrollbar {
+    display: none;
+  }
+}
