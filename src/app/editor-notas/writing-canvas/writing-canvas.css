@@ -3,12 +3,14 @@
   flex: 1;
   flex-direction: column;
   position: relative;
+  min-height: 0; 
 }
 
 .canvas-wrapper {
   flex: 1;
-  overflow: auto;
-  padding: 2rem 3rem; /* Espaciado interno cómodo (p-8) */
+  overflow-y: auto; 
+  overflow-x: hidden;
+  padding: 2rem 3rem 5rem 3rem; 
   position: relative;
   color: var(--text-main);
   font-size: 1.125rem;
@@ -19,16 +21,14 @@
   min-height: 400px;
 }
 
-/* El área real donde el usuario teclea */
 .editable-area {
   outline: none;
   min-height: 100%;
   line-height: 1.6;
   position: relative;
-  z-index: 2; /* Se coloca por encima del texto de ayuda */
+  z-index: 2;
 }
 
-/* El grupo de Hint + Botón que aparece cuando está vacío */
 .empty-state {
   position: absolute;
   top: 0;
@@ -72,7 +72,6 @@
   color: #3b82f6;
 }
 
-/* --- Botones inferiores (Copiar, Descargar, Borrar, Subir) --- */
 .bottom-actions-right {
   position: absolute;
   bottom: 1rem;
@@ -128,18 +127,12 @@
   color: var(--text-main);
 }
 
-/* ========================================= */
-/* ESTADO DESHABILITADO PARA BOTONES         */
-/* ========================================= */
 .disabled-btn {
   opacity: 0.4;
   cursor: not-allowed;
-  pointer-events: none; /* Bloquea los clics */
+  pointer-events: none;
 }
 
-/* ========================================= */
-/* ESTILOS DEL MODAL DE CLEAR EDITOR         */
-/* ========================================= */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -180,7 +173,7 @@
 }
 
 .close-x-btn {
-  background-color: var(--border-color); /* Círculo gris sutil */
+  background-color: var(--border-color); 
   color: var(--text-main);
   border: none;
   border-radius: 50%;
@@ -228,7 +221,7 @@
 }
 
 .delete-confirm-btn {
-  background-color: #ff4d4f; /* Color rosado/rojo igual a la imagen */
+  background-color: #ff4d4f; 
   color: #ffffff;
 }
 .delete-confirm-btn:hover {
@@ -240,16 +233,13 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-/* ========================================= */
-/* POSICIONAMIENTOS DE LOS MODALES           */
-/* ========================================= */
 .centered-modal {
-  align-items: center; /* Centrado vertical perfecto (Clear Editor) */
+  align-items: center; 
 }
 
 .top-modal {
-  align-items: flex-start; /* Se va para arriba */
-  padding-top: 80px; /* Ligeramente despegado del techo */
+  align-items: flex-start; 
+  padding-top: 80px; 
 }
 
 .download-box {
@@ -257,9 +247,6 @@
   max-width: 95%;
 }
 
-/* ========================================= */
-/* TARJETAS DE SELECCIÓN DE FORMATO          */
-/* ========================================= */
 .format-cards-container {
   display: flex;
   justify-content: space-between;
@@ -286,12 +273,10 @@
   border-color: #9ca3af;
 }
 
-/* Estado Seleccionado */
 .format-card.selected {
-  border: 1px solid #0ea5e9; /* Borde azul celeste */
+  border: 1px solid #0ea5e9; 
 }
 
-/* El botoncito de Radio Circular */
 .radio-indicator {
   position: absolute;
   top: 8px;
@@ -299,14 +284,13 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background-color: #d1d5db; /* Gris inactivo */
+  background-color: #d1d5db; 
   transition: background-color 0.2s;
 }
 .format-card.selected .radio-indicator {
-  background-color: #0ea5e9; /* Azul celeste activo */
+  background-color: #0ea5e9; 
 }
 
-/* Iconos de colores idénticos a las fotos */
 .format-icon {
   font-size: 2rem;
   margin-bottom: 12px;
@@ -314,9 +298,9 @@
   align-items: center;
   justify-content: center;
 }
-.blue-icon { color: #60a5fa; } /* Azul claro para TEXT */
-.red-icon { color: #ef4444; }  /* Rojo para PDF */
-.blue-word-icon { color: #2563eb; } /* Azul oscuro para WORD */
+.blue-icon { color: #60a5fa; } 
+.red-icon { color: #ef4444; }  
+.blue-word-icon { color: #2563eb; } 
 
 .format-label {
   font-size: 0.85rem;
@@ -325,9 +309,6 @@
   letter-spacing: 0.05em;
 }
 
-/* ========================================= */
-/* BOTONES INFERIORES DEL MODAL DE DESCARGA  */
-/* ========================================= */
 .download-actions {
   display: flex;
   justify-content: space-between !important;
@@ -364,4 +345,12 @@
 }
 .black-download-btn .ml-1 {
   margin-left: 6px;
+}
+             
+@media (max-width: 768px) {
+  .canvas-wrapper { 
+    padding: 1rem 1.25rem 4.5rem 1.25rem; 
+  }
+  .bottom-actions-right { bottom: 0.5rem; right: 0.5rem; }
+  .bottom-actions-left { bottom: 0.5rem; left: 0.5rem; }
 }

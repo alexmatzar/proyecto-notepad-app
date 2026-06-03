@@ -31,6 +31,8 @@ export class WritingCanvasComponent implements AfterViewInit {
 
   @ViewChild('editor', { static: true }) editorElement!: ElementRef;
 
+  @ViewChild('fileInput') fileInputElement!: ElementRef<HTMLInputElement>;
+
   constructor() {
     effect(() => {
       const activeNote = this.noteService.getActiveNote();
@@ -81,6 +83,55 @@ export class WritingCanvasComponent implements AfterViewInit {
     this.charCount = text.length; 
     const trimmed = text.trim();
     this.wordCount = trimmed.length > 0 ? trimmed.split(/\s+/).length : 0;
+  }
+
+  // =======================================================
+  // LÓGICA DE UPLOAD DOC
+  // =======================================================
+  
+  // 1. Simula el clic en el input invisible
+  triggerFileInput() {
+    if (this.fileInputElement) {
+      this.fileInputElement.nativeElement.click();
+    }
+  }
+
+  // 2. Procesa el archivo subido
+  handleFileUpload(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const content = e.target?.result;
+      if (typeof content === 'string' && this.editorElement) {
+        
+        // Reemplazamos los saltos de línea (\n) por etiquetas <br> para que el HTML los respete
+        const formattedContent = content.replace(/\n/g, '<br>');
+        
+        // Pegamos el contenido en el lienzo
+        this.editorElement.nativeElement.innerHTML = formattedContent;
+        
+        // Disparamos manualmente el evento 'input' para que Angular y Firebase se enteren
+        this.editorElement.nativeElement.dispatchEvent(new Event('input', { bubbles: true }));
+        
+        // Movemos el cursor al final
+        this.focusEditor();
+        
+        // Limpiamos el input para que permita subir el mismo archivo otra vez si se borra
+        input.value = '';
+      }
+    };
+
+    reader.onerror = () => {
+      console.error("Error al leer el archivo");
+      input.value = '';
+    };
+
+    // Leemos el archivo como texto puro (Perfecto para .txt y similares)
+    reader.readAsText(file);
   }
 
   copyToClipboard() {

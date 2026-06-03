@@ -41,7 +41,15 @@
 
 <div class="bottom-actions-left" data-purpose="bottom-left-actions">
   @if (isEmpty) {
-    <button class="upload-btn">
+    <input 
+      type="file" 
+      #fileInput 
+      style="display: none" 
+      accept=".txt,.doc,.docx,.pdf,.text" 
+      (change)="handleFileUpload($event)" 
+    />
+    
+    <button class="upload-btn" (click)="triggerFileInput()">
       <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload Doc
     </button>
   } @else {

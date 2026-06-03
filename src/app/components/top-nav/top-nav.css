@@ -82,7 +82,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  background-color: var(--bg-app);
+  background-color: transparent;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   padding: 6px 12px;
@@ -138,4 +138,24 @@
 }
 .action-btn:hover {
   background-color: var(--btn-hover);
+}
+
+@media (max-width: 768px) {
+  .brand-text { display: none; }
+  .search-box { display: none; }
+  
+  .doc-title-wrapper { 
+    margin-left: 10px; 
+    flex: 1;
+  }
+  
+  .doc-title-input { 
+    width: 100%; 
+    min-width: 100px; 
+  }
+  
+  .action-btn { 
+    width: 32px; 
+    height: 32px;
+  }
 }

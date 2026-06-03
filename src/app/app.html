@@ -1,6 +1,10 @@
 <app-top-nav (hamburgerClick)="onHamburgerClick()" [isDarkMode]="isDarkMode()" (themeToggleClick)="toggleTheme()"/>
 
 <main class="flex-1 flex overflow-hidden" data-purpose="main-content">
+  @if (sidebarPinned()) {
+    <div class="mobile-overlay" (click)="onHamburgerClick()"></div>
+  }
+
   <app-sidebar
     [activeView]="activeView()"
     [isPinned]="sidebarPinned()"
