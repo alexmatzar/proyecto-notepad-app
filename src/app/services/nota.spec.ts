@@ -1,16 +1,18 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NotaService } from './nota';
 
-import { Note } from './nota';
-
-describe('Note', () => {
-  let service: Note;
+describe('NotaService', () => {
+  let servicio: NotaService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(Note);
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule] 
+    });
+    servicio = TestBed.inject(NotaService);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(servicio).toBeTruthy();
   });
 });
