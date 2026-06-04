@@ -65,13 +65,11 @@
 .combobox-btn:hover { background-color: var(--btn-hover); }
 .combobox-label { display: flex; align-items: center; gap: 8px; }
 
-/* TAMAÑOS DE LOS COMBOBOXES DE LA BARRA */
 .font-combobox   { min-width: 170px; }
 .format-combobox { min-width: 150px; }
 .insert-combobox { min-width: 120px; }  
 .align-combobox  { min-width: 120px; } 
 
-/* MENÚS DESPLEGABLES (DROPDOWNS)            */
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -87,9 +85,8 @@
   overflow-y: auto;
 }
 
-/* --- TAMAÑOS DE LAS VENTANITAS FLOTANTES --- */
-.font-menu    { width: 180px; } /* <-- Cambia el ancho de la lista de fuentes */
-.format-menu  { width: 200px; } /* <-- Cambia el ancho de la lista de formatos */
+.font-menu    { width: 180px; }
+.format-menu  { width: 200px; }
 .effects-menu { width: 192px; left: auto; right: 0; }
 .insert-menu  { width: 220px; }
 .align-menu   { width: 160px; left: auto; right: 0; } 
@@ -120,8 +117,6 @@
   color: var(--text-muted);
 }
 
-/* INPUT DE TAMAÑO DE FUENTE */
-
 .font-size-input {
   width: 40px;
   text-align: center;
@@ -137,7 +132,7 @@
   border-color: var(--border-color);
   background-color: var(--bg-app);
 }
-/* Oculta las flechas del input en Chrome/Safari */
+
 .font-size-input::-webkit-outer-spin-button,
 .font-size-input::-webkit-inner-spin-button {
   -webkit-appearance: none;

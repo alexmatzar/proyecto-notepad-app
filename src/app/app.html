@@ -6,6 +6,7 @@
   }
 
   <app-sidebar
+  [class.pinned]="sidebarPinned()"
     [activeView]="activeView()"
     [isPinned]="sidebarPinned()"
     (viewChange)="onViewChange($event)" />

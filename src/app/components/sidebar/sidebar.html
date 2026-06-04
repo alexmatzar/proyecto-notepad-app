@@ -4,197 +4,89 @@
   (mouseenter)="onMouseEnter()"
   (mouseleave)="onMouseLeave()">
 
-  @if (!isPanelOpen) {
+  <div class="panel-content px-2">
 
-    <button
-      class="sidebar-btn mt-1"
-      style="background-color:#0ea5e9; color:white;">
-      <i class="fa-solid fa-plus"></i>
+    <button class="panel-new-btn" (click)="createNewNote()" [title]="!isPanelOpen ? 'New Note' : ''">
+      <i class="fa-solid fa-plus icon-fixed-width"></i>
+      <span class="text-label">New Note</span>
     </button>
 
-    @for (note of noteService.notes(); track note.id) {
-      <button
-        class="sidebar-btn"
-        [class.active]="noteService.IdnotaActiva() === note.id"
-        (click)="selectNote(note.id)"
-        [title]="note.titulo">
-        <i class="fa-regular fa-file-lines text-lg"></i>
-      </button>
-    }
-
-    <div class="w-8 h-px bg-gray-200 my-2"></div>
-
-    <button class="sidebar-btn" title="AI Paraphraser">
-      <i class="fa-solid fa-file-lines text-lg"></i>
-    </button>
-
-    <button class="sidebar-btn" title="Text to PDF">
-      <i class="fa-solid fa-file-pdf text-lg"></i>
-    </button>
-
-    <button class="sidebar-btn" title="AI Summarizer">
-      <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
-    </button>
-
-    <div class="w-8 h-px bg-gray-200 my-2"></div>
-
-    <button class="sidebar-btn" title="Feedback">
-      <i class="fa-regular fa-comment-dots text-lg"></i>
-    </button>
-
-    <button class="sidebar-btn" title="Trash">
-      <i class="fa-regular fa-trash-can text-lg"></i>
-    </button>
-
-    <button class="sidebar-btn" title="More">
-      <ion-icon name="chevron-down-circle-outline" class="text-xl"></ion-icon>
-    </button>
-    
-
-  }
-
-  @if (isPanelOpen) {
-
-    <div class="panel-content px-2">
-
-      <button class="panel-new-btn" (click)="createNewNote()">
-        <i class="fa-solid fa-plus"></i>
-        New Note
-      </button>
-
-      <div class="section-header">
-
-        <span class="panel-section-label">
-          Notes
-        </span>
-
-        <button class="view-all">
-          View all
-        </button>
-
-      </div>
-
-      @for (note of noteService.notes(); track note.id) {
-        <div class="note-item-wrapper">
-          <button class="panel-row" 
-                  [class.active-note]="noteService.IdnotaActiva() === note.id"
-                  (click)="selectNote(note.id)">
-            <i class="fa-regular fa-file-lines"></i>
-            <span class="note-title-text">{{ note.titulo }}</span>
-          </button>
-          
-          <button class="trash-hover-btn" (click)="openDeleteModal(note, $event)" title="Move to trash">
-            <i class="fa-regular fa-trash-can"></i>
-          </button>
-        </div>
-      }
-
-      <div class="panel-divider"></div>
-
-      <span class="panel-section-label">
-        Other Tools
-      </span>
-
-      <div class="flex flex-col gap-1 mt-1">
-
-        <button class="panel-row">
-          <i class="fa-solid fa-file-lines"></i>
-          AI Paraphraser
-        </button>
-
-        <button class="panel-row">
-          <i class="fa-solid fa-file-pdf"></i>
-          Text to PDF
-        </button>
-
-        <button class="panel-row">
-          <i class="fa-solid fa-wand-magic-sparkles"></i>
-          AI Summarizer
-        </button>
-
-      </div>
-
-      <div class="panel-divider"></div>
-
-      <span class="panel-section-label">
-        Other
-      </span>
-
-      <div class="flex flex-col gap-1 mt-1">
-
-        <button class="panel-row">
-          <i class="fa-regular fa-comment-dots"></i>
-          Feedback
-        </button>
-
-        <button class="panel-row">
-          <i class="fa-regular fa-trash-can"></i>
-          Trash
-        </button>
-
-        <button
-          class="panel-row"
-          (click)="showMore = !showMore">
-
-          <ion-icon
-            name="chevron-down-circle-outline"
-            [class.rotate]="showMore">
-
-          </ion-icon>
-
-          More
-
-        </button>
-
-        @if (showMore) {
-
-          <div class="more-dropdown">
-
-            <button class="panel-row sub-item">
-              <ion-icon name="logo-apple"></ion-icon>
-              Apple Store
-            </button>
-
-            <button class="panel-row sub-item">
-              <ion-icon name="logo-google-playstore"></ion-icon>
-              Play Store
-            </button>
-
-            <button class="panel-row sub-item">
-              <ion-icon name="git-branch-outline"></ion-icon>
-              Change Log
-            </button>
-
-            <button class="panel-row sub-item">
-              <ion-icon name="shield-checkmark-outline"></ion-icon>
-              Privacy Policy
-            </button>
-
-            <button class="panel-row sub-item">
-              <ion-icon name="document-text-outline"></ion-icon>
-              Terms of Use
-            </button>
-
-            <button class="panel-row sub-item">
-              <ion-icon name="information-circle-outline"></ion-icon>
-              About this Tool
-            </button>
-
-            <button class="panel-row sub-item">
-              <ion-icon name="settings-outline"></ion-icon>
-              Settings
-            </button>
-
-          </div>
-
-        }
-
-      </div>
-
+    <div class="section-header">
+      <span class="panel-section-label">Notes</span>
+      <button class="view-all text-label">View all</button>
     </div>
 
-  }
+    @for (note of noteService.notes(); track note.id) {
+      <div class="note-item-wrapper">
+        <button class="panel-row" 
+                [class.active-note]="noteService.IdnotaActiva() === note.id"
+                (click)="selectNote(note.id)"
+                [title]="!isPanelOpen ? note.titulo : ''">
+          <i class="fa-regular fa-file-lines icon-fixed-width"></i>
+          <span class="note-title-text text-label">{{ note.titulo }}</span>
+        </button>
+        
+        <button class="trash-hover-btn" (click)="openDeleteModal(note, $event)" title="Move to trash">
+          <i class="fa-regular fa-trash-can"></i>
+        </button>
+      </div>
+    }
 
+    <div class="panel-divider"></div>
+
+    <span class="panel-section-label">Other Tools</span>
+
+    <div class="flex flex-col gap-1">
+      <button class="panel-row" title="AI Paraphraser">
+        <i class="fa-solid fa-file-lines icon-fixed-width"></i>
+        <span class="text-label">AI Paraphraser</span>
+      </button>
+
+      <button class="panel-row" title="Text to PDF">
+        <i class="fa-solid fa-file-pdf icon-fixed-width"></i>
+        <span class="text-label">Text to PDF</span>
+      </button>
+
+      <button class="panel-row" title="AI Summarizer">
+        <i class="fa-solid fa-wand-magic-sparkles icon-fixed-width"></i>
+        <span class="text-label">AI Summarizer</span>
+      </button>
+    </div>
+
+    <div class="panel-divider"></div>
+
+    <span class="panel-section-label">Other</span>
+
+    <div class="flex flex-col gap-1">
+      <button class="panel-row" title="Feedback">
+        <i class="fa-regular fa-comment-dots icon-fixed-width"></i>
+        <span class="text-label">Feedback</span>
+      </button>
+
+      <button class="panel-row" title="Trash">
+        <i class="fa-regular fa-trash-can icon-fixed-width"></i>
+        <span class="text-label">Trash</span>
+      </button>
+
+      <button class="panel-row" (click)="showMore = !showMore" title="More">
+        <ion-icon name="chevron-down-circle-outline" [class.rotate]="showMore" class="icon-fixed-width text-xl"></ion-icon>
+        <span class="text-label">More</span>
+      </button>
+
+      @if (showMore) {
+        <div class="more-dropdown">
+          <button class="panel-row sub-item"><ion-icon name="logo-apple" class="icon-fixed-width"></ion-icon><span class="text-label">Apple Store</span></button>
+          <button class="panel-row sub-item"><ion-icon name="logo-google-playstore" class="icon-fixed-width"></ion-icon><span class="text-label">Play Store</span></button>
+          <button class="panel-row sub-item"><ion-icon name="git-branch-outline" class="icon-fixed-width"></ion-icon><span class="text-label">Change Log</span></button>
+          <button class="panel-row sub-item"><ion-icon name="shield-checkmark-outline" class="icon-fixed-width"></ion-icon><span class="text-label">Privacy Policy</span></button>
+          <button class="panel-row sub-item"><ion-icon name="document-text-outline" class="icon-fixed-width"></ion-icon><span class="text-label">Terms of Use</span></button>
+          <button class="panel-row sub-item"><ion-icon name="information-circle-outline" class="icon-fixed-width"></ion-icon><span class="text-label">About this Tool</span></button>
+          <button class="panel-row sub-item"><ion-icon name="settings-outline" class="icon-fixed-width"></ion-icon><span class="text-label">Settings</span></button>
+        </div>
+      }
+    </div>
+
+  </div>
 </aside>
 
 @if (showDeleteModal && noteToDelete) {

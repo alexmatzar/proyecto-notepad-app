@@ -1,58 +1,58 @@
 :host {
   display: block;
+  height: 100%;
+  width: 55px;
+  position: relative;
+  z-index: 40;
+  transition: width 0.15s ease;
   flex-shrink: 0;
 }
 
+:host(.pinned) {
+  width: 200px; 
+}
+
 .sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
+  width: 55px;
   background-color: var(--bg-surface);
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  padding: 1rem 0;
   box-shadow: 2px 0 5px -2px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  transition: width 0.1s ease;
-  width: 48px;
-  align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  transition: width 0.15s ease;
 }
 
 .sidebar.expanded {
   width: 200px;
-  align-items: stretch;
-}
-
-.sidebar-btn {
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.15s, color 0.15s;
-  margin-bottom: 0.5rem;
-  background: transparent;
-  border: none;
-  flex-shrink: 0;
-}
-.sidebar-btn:hover { background-color: var(--btn-hover); }
-.sidebar-btn.active {
-  background-color: var(--btn-hover);
-  color: var(--text-main);
 }
 
 .panel-content {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  overflow-y: auto;
+  min-height: 100%;
   padding: 0.75rem 0;
 }
 
+.text-label {
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.15s;
+}
+
+.icon-fixed-width {
+  width: 20px;
+  text-align: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
 .panel-new-btn {
-  width: 100%;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -65,10 +65,18 @@
   border: none;
   cursor: pointer;
   transition: background-color 0.15s;
-  margin-bottom: 0.75rem;
+  margin: 0 0.5rem 0.75rem 0.5rem;
 }
 .panel-new-btn:hover { opacity: 0.8; }
 .panel-new-btn i { color: #236BA2; }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.75rem;
+  margin-bottom: 0.25rem;
+}
 
 .panel-section-label {
   font-size: 0.7rem;
@@ -78,7 +86,18 @@
   letter-spacing: 0.05em;
   padding: 0 0.75rem;
   margin-bottom: 0.25rem;
+  white-space: nowrap;
 }
+
+.view-all {
+  font-size: 0.75rem;
+  color: #0ea5e9;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.view-all:hover { text-decoration: underline; }
 
 .panel-row {
   display: flex;
@@ -93,227 +112,133 @@
   cursor: pointer;
   text-align: left;
   transition: background-color 0.15s;
-  width: 100%;
-}
-.panel-row:hover { background-color: var(--btn-hover); }
-.panel-row.active-note {
-  background-color: var(--btn-hover);
-  font-weight: 500;
+  width: calc(100% - 1rem);
+  margin: 0 auto;
+  flex-shrink: 0;
 }
 
-.panel-row i {
-  color: var(--text-muted);
-  width: 16px;
-  text-align: center;
-}
+.panel-row:hover { background-color: var(--btn-hover); }
+.panel-row.active-note { background-color: var(--btn-hover); font-weight: 500; }
+.panel-row i, .panel-row ion-icon { color: var(--text-muted); }
 
 .panel-divider {
   height: 1px;
+  min-height: 1px;
+  flex-shrink: 0;
   background-color: var(--border-color);
   margin: 0.5rem 0.75rem;
+  transition: margin 0.15s;
 }
 
-.view-all {
-  font-size: 0.75rem;
-  color: #0ea5e9;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-}
-.view-all:hover { text-decoration: underline; }
-
-.section-header {
+/* Dropdown de opciones adicionales */
+.more-dropdown {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 0.75rem;
-  margin-bottom: 0.25rem;
+  flex-direction: column;
+  gap: 2px;
+  animation: dropdownAnimation 0.3s ease;
 }
-.more-dropdown{
-
-    margin-left: 10px;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 6px;
-
-    animation: dropdownAnimation 0.3s ease;
+.sub-item {
+  font-size: 13px;
+  padding-left: 1.5rem;
+  opacity: 0.9;
+}
+.rotate { transform: rotate(180deg); transition: 0.3s; }
+@keyframes dropdownAnimation {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* SUB ITEMS */
-
-.sub-item{
-
-    font-size: 14px;
-
-    padding-left: 10px;
-
-    opacity: 0.9;
-}
-
-/* ROTACIÓN ICONO */
-
-.rotate{
-
-    transform: rotate(180deg);
-
-    transition: 0.3s;
-}
-
-/* ANIMACIÓN */
-
-@keyframes dropdownAnimation{
-
-    from{
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-
-    to{
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-}
-
-/* ========================================= */
-/* HOVER TRASH ICON PARA LAS NOTAS           */
-/* ========================================= */
-.note-item-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.note-item-wrapper .panel-row {
-  padding-right: 2rem; /* Deja espacio para el basurero */
-}
-
-.note-title-text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
+/* Botón basurero */
+.note-item-wrapper .panel-row { padding-right: 1.5rem; }
+.note-item-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
+.note-title-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .trash-hover-btn {
-  position: absolute;
-  right: 0.5rem;
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  font-size: 0.875rem;
-  padding: 0.3rem;
-  border-radius: 4px;
-  cursor: pointer;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.2s;
+  position: absolute; right: 0.75rem; background: transparent; border: none;
+  color: var(--text-muted); font-size: 0.875rem; padding: 0.3rem;
+  border-radius: 4px; cursor: pointer; opacity: 0; visibility: hidden; transition: all 0.2s;
+}
+.note-item-wrapper:hover .trash-hover-btn { opacity: 1; visibility: visible; }
+.trash-hover-btn:hover { color: #ef4444; }
+
+.sidebar:not(.expanded) .text-label,
+.sidebar:not(.expanded) .section-header,
+.sidebar:not(.expanded) .panel-section-label,
+.sidebar:not(.expanded) .trash-hover-btn {
+  display: none !important;
 }
 
-.note-item-wrapper:hover .trash-hover-btn {
-  opacity: 1;
-  visibility: visible;
-}
-
-.trash-hover-btn:hover {
-  color: #ef4444; 
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
+.sidebar:not(.expanded) .panel-new-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  min-height: 2.5rem;
+  flex-shrink: 0;
+  padding: 0;
   justify-content: center;
-  z-index: 9999;
+  margin: 0 auto 0.75rem auto;
+  background-color: #CAEBFF;
+  color: #236BA2;
 }
 
-.modal-box {
-  background-color: var(--bg-surface);
-  border-radius: 8px; padding: 24px; width: 400px; max-width: 90%;
-  border: 1px solid var(--border-color);
-  padding: 24px;
-  width: 400px;
-  max-width: 90%;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  animation: modalPop 0.2s ease-out;
+.sidebar:not(.expanded) .panel-new-btn i { color: #236BA2; }
+
+.sidebar:not(.expanded) .panel-row {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  justify-content: center;
 }
 
-.modal-title {
-  margin: 0 0 8px 0;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--text-main);
+.sidebar:not(.expanded) .panel-divider {
+  margin: 0.5rem 1rem;
 }
 
-.modal-desc {
-  margin: 0 0 24px 0;
-  font-size: 0.875rem;
-  color: var(--text-muted);
+/* no se muestra esa cosa del scrollbar   */
+.sidebar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-}
-
-.modal-btn {
-  padding: 8px 16px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.cancel-btn {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-}
-.cancel-btn:hover {
-  background-color: var(--btn-hover);
-}
-
-.delete-confirm-btn {
-  background-color: #ef4444;
-  border: 1px solid #ef4444;
-  color: #ffffff;
-}
-.delete-confirm-btn:hover {
-  background-color: #dc2626;
-}
-
-@keyframes modalPop {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+.sidebar::-webkit-scrollbar {
+  display: none;
 }
 
 @media (max-width: 768px) {
   :host {
     position: absolute;
-    z-index: 40;
     height: 100%;
+    width: 0 !important;
+  }
+  
+  :host(.pinned) {
+    width: 0 !important; 
   }
   
   .sidebar {
     width: 260px !important;
-    position: absolute;
     left: -260px;
     transition: left 0.3s ease;
-    align-items: stretch;
   }
   
   .sidebar.expanded {
     left: 0;
     box-shadow: 4px 0 15px rgba(0,0,0,0.3);
   }
+  
+  .sidebar:not(.expanded) .text-label,
+  .sidebar:not(.expanded) .section-header,
+  .sidebar:not(.expanded) .panel-section-label {
+    display: flex !important;
+  }
 }
+
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+.modal-box { background-color: var(--bg-surface); border-radius: 8px; padding: 24px; width: 400px; max-width: 90%; border: 1px solid var(--border-color); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); animation: modalPop 0.2s ease-out; }
+.modal-title { margin: 0 0 8px 0; font-size: 1.125rem; font-weight: 600; color: var(--text-main); }
+.modal-desc { margin: 0 0 24px 0; font-size: 0.875rem; color: var(--text-muted); }
+.modal-actions { display: flex; justify-content: flex-end; gap: 12px; }
+.modal-btn { padding: 8px 16px; font-size: 0.875rem; font-weight: 500; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+.cancel-btn { background-color: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); }
+.cancel-btn:hover { background-color: var(--btn-hover); }
+.delete-confirm-btn { background-color: #ef4444; border: 1px solid #ef4444; color: #ffffff; }
+.delete-confirm-btn:hover { background-color: #dc2626; }
+@keyframes modalPop { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
