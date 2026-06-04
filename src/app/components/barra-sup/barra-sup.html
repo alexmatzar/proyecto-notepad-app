@@ -1,6 +1,6 @@
 <header class="top-nav-header" data-purpose="top-navigation">
   <div class="left-section">
-    <button class="hamburger-btn" (click)="onHamburger()">
+    <button class="hamburger-btn" (click)="alClicHamb()">
       <i class="fa-solid fa-bars"></i>
     </button>
 
@@ -17,17 +17,20 @@
 
     <div class="doc-title-wrapper flex items-center">
       <input
-        class="doc-title-input"
-        placeholder="Untitled Document"
-        type="text"
-        [value]="noteService.getActiveNote()?.titulo === 'Untitled Document' ? '' : noteService.getActiveNote()?.titulo"
-        (input)="onTitleChange($event)" />
+      class="doc-title-input"
+      placeholder="Untitled Document"
+      type="text"
+      [value]="servNota.obtNotaAct()?.titulo === 'Untitled Document' ? '' : servNota.obtNotaAct()?.titulo"
+      (input)="alCambiarTit($event)" />
         
-      <span class="text-xs italic ml-3" 
-            [class.text-gray-400]="!isDarkMode"
-            [class.text-gray-500]="isDarkMode"
+      <span class="text-xs italic ml-3 flex items-center gap-1" 
+            [class.text-gray-400]="!esModoOscuro"
+            [class.text-gray-500]="esModoOscuro"
             style="transition: color 0.3s ease;">
-        {{ noteService.syncStatus() }}
+        @if (servNota.estSinc() === 'Guardando...') {
+          <i class="fa-solid fa-circle-notch fa-spin text-[15px]"></i>
+        }
+        {{ servNota.estSinc() }}
       </span>
     </div>
   </div>
@@ -43,8 +46,8 @@
     </div>
 
     <div class="actions-group">
-      <button class="action-btn" (click)="onToggleTheme()">
-        @if (isDarkMode) {
+      <button class="action-btn" (click)="alAltTema()">
+        @if (esModoOscuro) {
           <i class="fa-solid fa-sun text-yellow-400"></i>
         } @else {
           <i class="fa-regular fa-moon"></i>

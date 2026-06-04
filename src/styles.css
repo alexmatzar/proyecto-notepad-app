@@ -10,13 +10,13 @@
   --btn-hover: #f3f4f6;
 }
 
-/* variables del modo oscuro con la clase .dark */
+/* variables del modo oscuro */
 html.dark {
-  --bg-app: #000000;       /* Fondo de la web completa negro puro */
-  --bg-surface: #181818;   /* Sidebar, top-nav, canvas y toolbar */
-  --text-main: #e5e7eb;    /* Letras blancas suaves */
-  --text-muted: #8c8c8c;   /* Iconos y textos secundarios */
-  --border-color: #333333; /* Líneas oscuras */
+  --bg-app: #000000;
+  --bg-surface: #181818;
+  --text-main: #e5e7eb;
+  --text-muted: #8c8c8c;
+  --border-color: #333333;
   --btn-hover: #2a2a2a;
 }
 
@@ -29,7 +29,6 @@ html, body {
   overflow: hidden;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }

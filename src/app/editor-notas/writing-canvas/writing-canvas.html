@@ -1,17 +1,14 @@
 <div class="canvas-wrapper" data-purpose="writing-canvas">
-
   <div class="editor-container">
-    
     <div
       #editor
       class="editable-area"
       contenteditable="true"
-      (input)="onInput($event)">
+      (input)="alEscribir($event)">
     </div>
 
-    <div class="empty-state" [style.display]="isEmpty ? 'block' : 'none'" (click)="focusEditor()">
+    <div class="empty-state" [style.display]="vacio ? 'block' : 'none'" (click)="enfocarEd()">
       <div class="hint-text">Start writing, press '/' for commands...</div>
-      
       <button class="help-write-btn" (click)="$event.stopPropagation()">
         <i class="fa-solid fa-wand-magic-sparkles magic-icon"></i>
         Help me write
@@ -21,69 +18,68 @@
 </div>
 
 <div class="bottom-actions-right" data-purpose="bottom-right-actions">
-  
-  <button class="action-btn" [class.disabled-btn]="isEmpty" (mousedown)="$event.preventDefault()" (click)="copyToClipboard()">
-    @if (isCopied) {
+  <button class="action-btn" [class.disabled-btn]="vacio" (mousedown)="$event.preventDefault()" (click)="copiarPort()">
+    @if (copiado) {
       <i class="fa-solid fa-check text-green-500"></i>
     } @else {
       <i class="fa-regular fa-copy"></i>
     }
   </button>
 
-  <button class="action-btn" [class.disabled-btn]="isEmpty" (mousedown)="$event.preventDefault()" (click)="openDownloadModal()">
+  <button class="action-btn" [class.disabled-btn]="vacio" (mousedown)="$event.preventDefault()" (click)="abrModDesc()">
     <i class="fa-solid fa-download"></i>
   </button>
 
-  <button class="action-btn delete-btn" [class.disabled-btn]="isEmpty" (mousedown)="$event.preventDefault()" (click)="openClearModal()">
+  <button class="action-btn delete-btn" [class.disabled-btn]="vacio" (mousedown)="$event.preventDefault()" (click)="abrModBorr()">
     <i class="fa-regular fa-trash-can"></i>
   </button>
 </div>
 
 <div class="bottom-actions-left" data-purpose="bottom-left-actions">
-  @if (isEmpty) {
+  @if (vacio) {
     <input 
       type="file" 
       #fileInput 
       style="display: none" 
       accept=".txt,.doc,.docx,.pdf,.text" 
-      (change)="handleFileUpload($event)" 
+      (change)="alSubirArch($event)" 
     />
     
-    <button class="upload-btn" (click)="triggerFileInput()">
+    <button class="upload-btn" (click)="activarArch()">
       <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload Doc
     </button>
   } @else {
     <span class="text-xs font-semibold text-gray-500" style="padding-left: 8px;">
-      Words: {{ wordCount }} Characters: {{ charCount }}
+      Words: {{ cantPalab }} Characters: {{ cantCarac }}
     </span>
   }
 </div>
 
-@if (showClearModal) {
+@if (modBorrAct) {
   <div class="modal-overlay">
     <div class="modal-box">
       <div class="modal-header">
         <h3 class="modal-title">Clear Editor</h3>
-        <button class="close-x-btn" (click)="cancelClear()">
+        <button class="close-x-btn" (click)="cancBorr()">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
       <p class="modal-desc">Are you sure you want to clear the editor?</p>
       
       <div class="modal-actions">
-        <button class="modal-btn cancel-btn" (click)="cancelClear()">Cancel</button>
-        <button class="modal-btn delete-confirm-btn" (click)="confirmClear()">Clear</button>
+        <button class="modal-btn cancel-btn" (click)="cancBorr()">Cancel</button>
+        <button class="modal-btn delete-confirm-btn" (click)="confBorr()">Clear</button>
       </div>
     </div>
   </div>
 }
 
-@if (showDownloadModal) {
+@if (modDescAct) {
   <div class="modal-overlay top-modal">
     <div class="modal-box download-box">
       <div class="modal-header">
         <h3 class="modal-title">Download Your Notes</h3>
-        <button class="close-x-btn" (click)="closeDownloadModal()">
+        <button class="close-x-btn" (click)="cerrModDesc()">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -91,7 +87,7 @@
       
       <div class="format-cards-container">
         
-        <div class="format-card" [class.selected]="selectedFormat === 'TEXT'" (click)="selectDownloadFormat('TEXT')">
+        <div class="format-card" [class.selected]="fmtDesc === 'TEXT'" (click)="selFmtDesc('TEXT')">
           <div class="radio-indicator"></div>
           <div class="format-icon blue-icon">
             <i class="fa-solid fa-file-lines"></i>
@@ -99,7 +95,7 @@
           <div class="format-label">TEXT</div>
         </div>
 
-        <div class="format-card" [class.selected]="selectedFormat === 'PDF'" (click)="selectDownloadFormat('PDF')">
+        <div class="format-card" [class.selected]="fmtDesc === 'PDF'" (click)="selFmtDesc('PDF')">
           <div class="radio-indicator"></div>
           <div class="format-icon red-icon">
             <i class="fa-solid fa-file-pdf"></i>
@@ -107,7 +103,7 @@
           <div class="format-label">PDF</div>
         </div>
 
-        <div class="format-card" [class.selected]="selectedFormat === 'WORD'" (click)="selectDownloadFormat('WORD')">
+        <div class="format-card" [class.selected]="fmtDesc === 'WORD'" (click)="selFmtDesc('WORD')">
           <div class="radio-indicator"></div>
           <div class="format-icon blue-word-icon">
             <i class="fa-solid fa-file-word"></i>
@@ -118,8 +114,8 @@
       </div>
 
       <div class="modal-actions download-actions">
-        <button class="dismiss-text-btn" (click)="closeDownloadModal()">Dismiss</button>
-        <button class="black-download-btn" (click)="executeDownload()">
+        <button class="dismiss-text-btn" (click)="cerrModDesc()">Dismiss</button>
+        <button class="black-download-btn" (click)="ejecDesc()">
           Download <i class="fa-solid fa-arrow-down-to-line ml-1"></i>
         </button>
       </div>

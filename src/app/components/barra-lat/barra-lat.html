@@ -1,12 +1,12 @@
 <aside
   class="sidebar"
-  [class.expanded]="isPanelOpen"
-  (mouseenter)="onMouseEnter()"
-  (mouseleave)="onMouseLeave()">
+  [class.expanded]="estaPanelAbierto"
+  (mouseenter)="alEntrarRaton()"
+  (mouseleave)="alSalirRaton()">
 
   <div class="panel-content px-2">
 
-    <button class="panel-new-btn" (click)="createNewNote()" [title]="!isPanelOpen ? 'New Note' : ''">
+    <button class="panel-new-btn" (click)="crearNuevaNota()" [title]="!estaPanelAbierto ? 'New Note' : ''">
       <i class="fa-solid fa-plus icon-fixed-width"></i>
       <span class="text-label">New Note</span>
     </button>
@@ -16,17 +16,17 @@
       <button class="view-all text-label">View all</button>
     </div>
 
-    @for (note of noteService.notes(); track note.id) {
+    @for (nota of noteService.notes(); track nota.id) {
       <div class="note-item-wrapper">
         <button class="panel-row" 
-                [class.active-note]="noteService.IdnotaActiva() === note.id"
-                (click)="selectNote(note.id)"
-                [title]="!isPanelOpen ? note.titulo : ''">
+                [class.active-note]="noteService.IdnotaActiva() === nota.id"
+                (click)="seleccionarNota(nota.id)"
+                [title]="!estaPanelAbierto ? nota.titulo : ''">
           <i class="fa-regular fa-file-lines icon-fixed-width"></i>
-          <span class="note-title-text text-label">{{ note.titulo }}</span>
+          <span class="note-title-text text-label">{{ nota.titulo }}</span>
         </button>
         
-        <button class="trash-hover-btn" (click)="openDeleteModal(note, $event)" title="Move to trash">
+        <button class="trash-hover-btn" (click)="abrirModalBorrado(nota, $event)" title="Move to trash">
           <i class="fa-regular fa-trash-can"></i>
         </button>
       </div>
@@ -68,12 +68,12 @@
         <span class="text-label">Trash</span>
       </button>
 
-      <button class="panel-row" (click)="showMore = !showMore" title="More">
-        <ion-icon name="chevron-down-circle-outline" [class.rotate]="showMore" class="icon-fixed-width text-xl"></ion-icon>
+      <button class="panel-row" (click)="mostrarMas = !mostrarMas" title="More">
+        <ion-icon name="chevron-down-circle-outline" [class.rotate]="mostrarMas" class="icon-fixed-width text-xl"></ion-icon>
         <span class="text-label">More</span>
       </button>
 
-      @if (showMore) {
+      @if (mostrarMas) {
         <div class="more-dropdown">
           <button class="panel-row sub-item"><ion-icon name="logo-apple" class="icon-fixed-width"></ion-icon><span class="text-label">Apple Store</span></button>
           <button class="panel-row sub-item"><ion-icon name="logo-google-playstore" class="icon-fixed-width"></ion-icon><span class="text-label">Play Store</span></button>
@@ -89,15 +89,15 @@
   </div>
 </aside>
 
-@if (showDeleteModal && noteToDelete) {
+@if (mostrarModalBorrado && notaABorrar) {
   <div class="modal-overlay">
     <div class="modal-box">
       <h3 class="modal-title">Move to trash?</h3>
-      <p class="modal-desc">“{{ noteToDelete.titulo }}” will be moved to trash.</p>
+      <p class="modal-desc">“{{ notaABorrar.titulo }}” will be moved to trash.</p>
       
       <div class="modal-actions">
-        <button class="modal-btn cancel-btn" (click)="cancelDelete()">Cancel</button>
-        <button class="modal-btn delete-confirm-btn" (click)="executeDelete()">Move to trash</button>
+        <button class="modal-btn cancel-btn" (click)="cancelarBorrado()">Cancel</button>
+        <button class="modal-btn delete-confirm-btn" (click)="ejecutarBorrado()">Move to trash</button>
       </div>
     </div>
   </div>

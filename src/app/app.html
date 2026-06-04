@@ -1,17 +1,17 @@
-<app-top-nav (hamburgerClick)="onHamburgerClick()" [isDarkMode]="isDarkMode()" (themeToggleClick)="toggleTheme()"/>
+<app-barra-sup (clicHamburguesa)="alHacerClicHamburguesa()" [esModoOscuro]="esModoOscuro()" (clicAlternarTema)="alternarTema()"/>
 
-<main class="flex-1 flex overflow-hidden" data-purpose="main-content">
-  @if (sidebarPinned()) {
-    <div class="mobile-overlay" (click)="onHamburgerClick()"></div>
+<main class="flex-1 flex overflow-hidden relative" data-purpose="main-content">
+  @if (barraFijada()) {
+    <div class="mobile-overlay" (click)="alHacerClicHamburguesa()"></div>
   }
 
-  <app-sidebar
-  [class.pinned]="sidebarPinned()"
-    [activeView]="activeView()"
-    [isPinned]="sidebarPinned()"
-    (viewChange)="onViewChange($event)" />
+  <app-barra-lat
+    [class.pinned]="barraFijada()"
+    [vistaActiva]="vistaActiva()"
+    [estaFijada]="barraFijada()"
+    (cambioDeVista)="alCambiarVista($event)" />
 
-  @if (activeView() === 'notes') {
+  @if (vistaActiva() === 'notas') {
     <app-editor-notas />
   }
 </main>

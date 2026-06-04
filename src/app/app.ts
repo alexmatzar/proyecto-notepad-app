@@ -1,30 +1,30 @@
 import { Component, signal, effect } from '@angular/core';
-import { TopNavComponent } from './components/top-nav/top-nav';
-import { SidebarComponent } from './components/sidebar/sidebar';
+import { BarraSupComponent } from './components/barra-sup/barra-sup';
+import { BarraLatComponent } from './components/barra-lat/barra-lat';
 import { EditorNotasComponent } from './editor-notas/editor-notas';
 
 @Component({
   selector: 'app-root',
-  imports: [TopNavComponent, SidebarComponent, EditorNotasComponent],
+  imports: [BarraSupComponent, BarraLatComponent, EditorNotasComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  activeView = signal<string>('notes');
-  sidebarPinned = signal<boolean>(false);
+  vistaActiva = signal<string>('notas');
+  barraFijada = signal<boolean>(false);
   
-  isDarkMode = signal<boolean>(false);
+  esModoOscuro = signal<boolean>(false);
 
   constructor() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      this.isDarkMode.set(true);
+    const temaGuardado = localStorage.getItem('theme');
+    if (temaGuardado === 'dark') {
+      this.esModoOscuro.set(true);
       document.documentElement.classList.add('dark');
     }
 
     effect(() => {
-      const isDark = this.isDarkMode();
-      if (isDark) {
+      const esOscuro = this.esModoOscuro();
+      if (esOscuro) {
         document.documentElement.classList.add('dark');
         localStorage.setItem('theme', 'dark');
       } else {
@@ -34,15 +34,15 @@ export class App {
     });
   }
 
-  onViewChange(view: string) {
-    this.activeView.set(view);
+  alCambiarVista(vista: string) {
+    this.vistaActiva.set(vista);
   }
 
-  onHamburgerClick() {
-    this.sidebarPinned.update(v => !v);
+  alHacerClicHamburguesa() {
+    this.barraFijada.update(v => !v);
   }
 
-  toggleTheme() {
-    this.isDarkMode.update(v => !v);
+  alternarTema() {
+    this.esModoOscuro.update(v => !v);
   }
 }

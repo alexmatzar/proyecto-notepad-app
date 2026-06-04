@@ -8,104 +8,104 @@ import { Component, HostListener } from '@angular/core';
   styleUrl: './editor-toolbar.css'
 })
 export class EditorToolbarComponent {
-  openDropdown: string | null = null;
-  selectedFont: string = 'Arial';
-  selectedFormat: string = 'Normal';
+  menuAbierto: string | null = null;
+  fuenteSel: string = 'Arial';
+  fmtSel: string = 'Normal';
 
-  isBold: boolean = false;
-  isItalic: boolean = false;
-  isUnderline: boolean = false;
+  esNeg: boolean = false;
+  esCur: boolean = false;
+  esSub: boolean = false;
 
-  currentFontSize: number = 16; 
-  savedSelection: Range | null = null;
+  tamFuente: number = 16; 
+  selGuardada: Range | null = null;
 
-  toggleDropdown(dropdownName: string, event: Event) {
-    event.stopPropagation();
-    if (this.openDropdown === dropdownName) {
-      this.openDropdown = null;
+  altMenu(nombreMenu: string, evento: Event) {
+    evento.stopPropagation();
+    if (this.menuAbierto === nombreMenu) {
+      this.menuAbierto = null;
     } else {
       const sel = window.getSelection();
       if (sel && sel.rangeCount > 0) {
-        this.savedSelection = sel.getRangeAt(0);
+        this.selGuardada = sel.getRangeAt(0);
       }
-      this.openDropdown = dropdownName;
+      this.menuAbierto = nombreMenu;
     }
   }
 
   @HostListener('document:click')
-  onDocumentClick() {
-    this.openDropdown = null;
+  alClicDoc() {
+    this.menuAbierto = null;
   }
 
   @HostListener('document:selectionchange')
-  checkFormatting() {
-    this.isBold = document.queryCommandState('bold');
-    this.isItalic = document.queryCommandState('italic');
-    this.isUnderline = document.queryCommandState('underline');
+  revFmt() {
+    this.esNeg = document.queryCommandState('bold');
+    this.esCur = document.queryCommandState('italic');
+    this.esSub = document.queryCommandState('underline');
   }
 
-  preventClose(event: Event) {
-    event.stopPropagation();
+  prevCierre(evento: Event) {
+    evento.stopPropagation();
   }
 
-  keepFocus(event: Event) {
-    event.preventDefault(); 
+  mantFoco(evento: Event) {
+    evento.preventDefault(); 
   }
 
-  executeCommand(command: string, value?: string) {
+  ejecCmd(comando: string, valor?: string) {
     const editor = document.querySelector('.editable-area') as HTMLElement;
     if (editor) editor.focus();
 
-    if (this.savedSelection) {
+    if (this.selGuardada) {
       const sel = window.getSelection();
       if (sel) {
         sel.removeAllRanges();
-        sel.addRange(this.savedSelection);
+        sel.addRange(this.selGuardada);
       }
     }
     
-    document.execCommand(command, false, value);
+    document.execCommand(comando, false, valor);
 
     if (editor) {
       editor.dispatchEvent(new Event('input', { bubbles: true }));
     }
   }
 
-  undo() { this.executeCommand('undo'); }
-  redo() { this.executeCommand('redo'); }
+  deshacer() { this.ejecCmd('undo'); }
+  rehacer() { this.ejecCmd('redo'); }
 
-  applyFont(fontName: string) {
-    this.executeCommand('fontName', fontName);
-    this.selectedFont = fontName;
-    this.openDropdown = null;
+  apliFuente(fuente: string) {
+    this.ejecCmd('fontName', fuente);
+    this.fuenteSel = fuente;
+    this.menuAbierto = null;
   }
 
-  applyFormat(tag: string, label: string) {
-    this.executeCommand('formatBlock', `<${tag}>`);
-    this.selectedFormat = label;
-    this.openDropdown = null;
+  apliFmt(etiq: string, etiqVista: string) {
+    this.ejecCmd('formatBlock', `<${etiq}>`);
+    this.fmtSel = etiqVista;
+    this.menuAbierto = null;
   }
 
-  applyList(command: string) {
-    this.executeCommand(command);
-    this.openDropdown = null;
+  apliLista(comando: string) {
+    this.ejecCmd(comando);
+    this.menuAbierto = null;
   }
 
-  applyChecklist() {
-    const checkboxHTML = '<ul style="list-style-type: none; padding-left: 0;"><li><input type="checkbox" style="margin-right: 8px;"> </li></ul>';
-    this.executeCommand('insertHTML', checkboxHTML);
-    this.openDropdown = null;
+  apliCheck() {
+    const htmlCheck = '<ul style="list-style-type: none; padding-left: 0;"><li><input type="checkbox" style="margin-right: 8px;"> </li></ul>';
+    this.ejecCmd('insertHTML', htmlCheck);
+    this.menuAbierto = null;
   }
 
-  applyCustomFontSize(size: number) {
+  apliTamFuente(tam: number) {
     const editor = document.querySelector('.editable-area') as HTMLElement;
     if (editor) editor.focus();
 
-    if (this.savedSelection) {
+    if (this.selGuardada) {
       const sel = window.getSelection();
       if (sel) {
         sel.removeAllRanges();
-        sel.addRange(this.savedSelection);
+        sel.addRange(this.selGuardada);
       }
     }
 
@@ -114,26 +114,26 @@ export class EditorToolbarComponent {
 
     if (sel.isCollapsed) {
       const span = document.createElement('span');
-      span.style.fontSize = size + 'px';
+      span.style.fontSize = tam + 'px';
       span.innerHTML = '&#8203;'; 
       
-      const range = sel.getRangeAt(0);
-      range.insertNode(span);
-      range.setStart(span.firstChild as Node, 1);
-      range.collapse(true);
+      const rango = sel.getRangeAt(0);
+      rango.insertNode(span);
+      rango.setStart(span.firstChild as Node, 1);
+      rango.collapse(true);
       
       sel.removeAllRanges();
-      sel.addRange(range);
+      sel.addRange(rango);
     } else {
       document.execCommand('styleWithCSS', false, 'false');
       document.execCommand('fontSize', false, '7');
       
-      const fontElements = document.querySelectorAll('font[size="7"]');
+      const elemsFuente = document.querySelectorAll('font[size="7"]');
       
-      fontElements.forEach((node) => {
-        const el = node as HTMLElement;
+      elemsFuente.forEach((nodo) => {
+        const el = nodo as HTMLElement;
         el.removeAttribute('size');
-        el.style.fontSize = size + 'px';
+        el.style.fontSize = tam + 'px';
       });
     }
 
@@ -142,31 +142,31 @@ export class EditorToolbarComponent {
     }
   }
 
-  increaseFontSize() {
-    this.currentFontSize += 2;
-    this.applyCustomFontSize(this.currentFontSize);
+  aumFuente() {
+    this.tamFuente += 2;
+    this.apliTamFuente(this.tamFuente);
   }
 
-  decreaseFontSize() {
-    if (this.currentFontSize > 2) {
-      this.currentFontSize -= 2;
-      this.applyCustomFontSize(this.currentFontSize);
+  dismFuente() {
+    if (this.tamFuente > 2) {
+      this.tamFuente -= 2;
+      this.apliTamFuente(this.tamFuente);
     }
   }
 
-  onFontSizeFocus() {
+  alFocoTam() {
     const sel = window.getSelection();
     if (sel && sel.rangeCount > 0) {
-      this.savedSelection = sel.getRangeAt(0);
+      this.selGuardada = sel.getRangeAt(0);
     }
   }
 
-  onFontSizeManualChange(event: Event) {
-    const input = event.target as HTMLInputElement;
+  alCambioTam(evento: Event) {
+    const input = evento.target as HTMLInputElement;
     const val = parseInt(input.value, 10);
     if (!isNaN(val)) {
-      this.currentFontSize = val;
-      this.applyCustomFontSize(val);
+      this.tamFuente = val;
+      this.apliTamFuente(val);
     }
   }
 }

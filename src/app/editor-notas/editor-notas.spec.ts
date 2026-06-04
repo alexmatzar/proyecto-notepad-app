@@ -1,22 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { EditorNotasComponent } from './editor-notas';
 
-import { EditorNotas } from './editor-notas';
-
-describe('EditorNotas', () => {
-  let component: EditorNotas;
-  let fixture: ComponentFixture<EditorNotas>;
+describe('EditorNotasComponent', () => {
+  let componente: EditorNotasComponent;
+  let accesorio: ComponentFixture<EditorNotasComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditorNotas],
+      imports: [EditorNotasComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EditorNotas);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
+    accesorio = TestBed.createComponent(EditorNotasComponent);
+    componente = accesorio.componentInstance;
+    await accesorio.whenStable();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(componente).toBeTruthy();
   });
 });

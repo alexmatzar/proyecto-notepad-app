@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild, inject, effect, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { NoteService } from '../../services/note';
+import { NotaService } from '../../services/nota';
 
 declare var pdfMake: any;
 declare var htmlToPdfmake: any;
@@ -12,140 +12,121 @@ declare var htmlToPdfmake: any;
   styleUrl: './writing-canvas.css'
 })
 export class WritingCanvasComponent implements AfterViewInit {
-  public noteService = inject(NoteService);
-
+  public servNota = inject(NotaService);
   private cdr = inject(ChangeDetectorRef);
 
-  isEmpty: boolean = true;
-  typingTimer: any;
-  loadedNoteId: string | null = null; 
+  vacio: boolean = true;
+  tempEscr: any;
+  idNotaCarg: string | null = null; 
 
-  wordCount: number = 0;
-  charCount: number = 0;
+  cantPalab: number = 0;
+  cantCarac: number = 0;
 
-  isCopied: boolean = false;
-  showClearModal: boolean = false;
+  copiado: boolean = false;
+  modBorrAct: boolean = false;
+  modDescAct: boolean = false;
+  fmtDesc: 'TEXT' | 'PDF' | 'WORD' = 'TEXT';
 
-  showDownloadModal: boolean = false;
-  selectedFormat: 'TEXT' | 'PDF' | 'WORD' = 'TEXT';
-
-  @ViewChild('editor', { static: true }) editorElement!: ElementRef;
-
-  @ViewChild('fileInput') fileInputElement!: ElementRef<HTMLInputElement>;
+  @ViewChild('editor', { static: true }) elemEd!: ElementRef;
+  @ViewChild('fileInput') elemArch!: ElementRef<HTMLInputElement>;
 
   constructor() {
     effect(() => {
-      const activeNote = this.noteService.getActiveNote();
+      const notaActiva = this.servNota.obtNotaAct();
       
-      if (this.editorElement && activeNote) {
-        if (this.loadedNoteId !== activeNote.id) {
-           this.editorElement.nativeElement.innerHTML = activeNote.contenido;
-           this.loadedNoteId = activeNote.id;
+      if (this.elemEd && notaActiva) {
+        if (this.idNotaCarg !== notaActiva.id) {
+           this.elemEd.nativeElement.innerHTML = notaActiva.contenido;
+           this.idNotaCarg = notaActiva.id;
 
-           const rawText = this.editorElement.nativeElement.innerText || '';
-           this.isEmpty = rawText.trim().length === 0;
-           this.updateCounts(rawText);
+           setTimeout(() => {
+             const txtPuro = this.elemEd.nativeElement.innerText || '';
+             this.vacio = txtPuro.trim().length === 0;
+             this.actCants(txtPuro);
+             this.enfocarEd();
+           });
         }
-      } else if (!activeNote) {
-        this.loadedNoteId = null;
-        this.wordCount = 0;
-        this.charCount = 0;
+      } else if (!notaActiva) {
+        this.idNotaCarg = null;
+        this.cantPalab = 0;
+        this.cantCarac = 0;
       }
     });
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.focusEditor();
+      this.enfocarEd();
     }, 100);
   }
 
-  onInput(event: Event) {
-    const target = event.target as HTMLElement;
-    const htmlContent = target.innerHTML;
-    const rawText = target.innerText;
+  alEscribir(evento: Event) {
+    const obj = evento.target as HTMLElement;
+    const htmlCont = obj.innerHTML;
+    const txtPuro = obj.innerText;
 
-    const cleanedText = rawText.replace(/\u200B/g, '');
-    const plainText = cleanedText.trim();
+    const txtLimpio = txtPuro.replace(/\u200B/g, '');
+    const txtFinal = txtLimpio.trim();
 
-    this.isEmpty = plainText.length === 0;
-    this.updateCounts(cleanedText);
-    this.noteService.updateActiveNoteContent(htmlContent);
+    this.vacio = txtFinal.length === 0;
+    this.actCants(txtLimpio);
+    this.servNota.actContNota(htmlCont);
 
-    clearTimeout(this.typingTimer);
-    this.typingTimer = setTimeout(() => {
-      const htmlSinFantasma = htmlContent.replace(/&#8203;/g, '').replace(/\u200B/g, '');
-      this.noteService.handleAFKState(htmlSinFantasma);
+    clearTimeout(this.tempEscr);
+    this.tempEscr = setTimeout(() => {
+      const htmlLimp = htmlCont.replace(/&#8203;/g, '').replace(/\u200B/g, '');
+      this.servNota.manejarInact(htmlLimp);
     }, 1000);
   }
 
-  updateCounts(text: string) {
-    this.charCount = text.length; 
-    const trimmed = text.trim();
-    this.wordCount = trimmed.length > 0 ? trimmed.split(/\s+/).length : 0;
+  actCants(texto: string) {
+    this.cantCarac = texto.length; 
+    const recortado = texto.trim();
+    this.cantPalab = recortado.length > 0 ? recortado.split(/\s+/).length : 0;
   }
 
-  // =======================================================
-  // LÓGICA DE UPLOAD DOC
-  // =======================================================
-  
-  // 1. Simula el clic en el input invisible
-  triggerFileInput() {
-    if (this.fileInputElement) {
-      this.fileInputElement.nativeElement.click();
+  activarArch() {
+    if (this.elemArch) {
+      this.elemArch.nativeElement.click();
     }
   }
 
-  // 2. Procesa el archivo subido
-  handleFileUpload(event: Event) {
-    const input = event.target as HTMLInputElement;
+  alSubirArch(evento: Event) {
+    const input = evento.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
 
-    const file = input.files[0];
-    const reader = new FileReader();
+    const arch = input.files[0];
+    const lector = new FileReader();
 
-    reader.onload = (e) => {
-      const content = e.target?.result;
-      if (typeof content === 'string' && this.editorElement) {
-        
-        // Reemplazamos los saltos de línea (\n) por etiquetas <br> para que el HTML los respete
-        const formattedContent = content.replace(/\n/g, '<br>');
-        
-        // Pegamos el contenido en el lienzo
-        this.editorElement.nativeElement.innerHTML = formattedContent;
-        
-        // Disparamos manualmente el evento 'input' para que Angular y Firebase se enteren
-        this.editorElement.nativeElement.dispatchEvent(new Event('input', { bubbles: true }));
-        
-        // Movemos el cursor al final
-        this.focusEditor();
-        
-        // Limpiamos el input para que permita subir el mismo archivo otra vez si se borra
+    lector.onload = (e) => {
+      const cont = e.target?.result;
+      if (typeof cont === 'string' && this.elemEd) {
+        const contFmt = cont.replace(/\n/g, '<br>');
+        this.elemEd.nativeElement.innerHTML = contFmt;
+        this.elemEd.nativeElement.dispatchEvent(new Event('input', { bubbles: true }));
+        this.enfocarEd();
         input.value = '';
       }
     };
 
-    reader.onerror = () => {
+    lector.onerror = () => {
       console.error("Error al leer el archivo");
       input.value = '';
     };
 
-    // Leemos el archivo como texto puro (Perfecto para .txt y similares)
-    reader.readAsText(file);
+    lector.readAsText(arch);
   }
 
-  copyToClipboard() {
-    if (this.isEmpty || !this.editorElement) return;
+  copiarPort() {
+    if (this.vacio || !this.elemEd) return;
 
-    // Solo obtenemos el texto
-    const textToCopy = this.editorElement.nativeElement.innerText;
+    const texto = this.elemEd.nativeElement.innerText;
     
-    navigator.clipboard.writeText(textToCopy).then(() => {
-      this.isCopied = true;
-      this.cdr.detectChanges(); // Angular pinta el Check al instante
-      // Cuenta regresiva de 2 segundos exactos
+    navigator.clipboard.writeText(texto).then(() => {
+      this.copiado = true;
+      this.cdr.detectChanges(); 
       setTimeout(() => {
-        this.isCopied = false;
+        this.copiado = false;
         this.cdr.detectChanges();
       }, 2000);
     }).catch(err => {
@@ -153,113 +134,98 @@ export class WritingCanvasComponent implements AfterViewInit {
     });
   }
 
-  openClearModal() {
-    if (this.isEmpty) return;
-    this.showClearModal = true;
+  abrModBorr() {
+    if (this.vacio) return;
+    this.modBorrAct = true;
   }
 
-  cancelClear() {
-    this.showClearModal = false;
+  cancBorr() {
+    this.modBorrAct = false;
   }
 
-  confirmClear() {
-    if (this.editorElement) {
-      this.editorElement.nativeElement.innerHTML = '';
-      this.editorElement.nativeElement.dispatchEvent(new Event('input', { bubbles: true }));
-      this.showClearModal = false;
-      this.focusEditor();
+  confBorr() {
+    if (this.elemEd) {
+      this.elemEd.nativeElement.innerHTML = '';
+      this.elemEd.nativeElement.dispatchEvent(new Event('input', { bubbles: true }));
+      this.modBorrAct = false;
+      this.enfocarEd();
     }
   }
 
-  openDownloadModal() {
-    if (this.isEmpty) return;
-    this.showDownloadModal = true;
-    this.selectedFormat = 'TEXT'; // Restablecer el formato por defecto
+  abrModDesc() {
+    if (this.vacio) return;
+    this.modDescAct = true;
+    this.fmtDesc = 'TEXT'; 
   }
 
-  closeDownloadModal() {
-    this.showDownloadModal = false;
+  cerrModDesc() {
+    this.modDescAct = false;
   }
 
-  selectDownloadFormat(format: 'TEXT' | 'PDF' | 'WORD') {
-    this.selectedFormat = format;
+  selFmtDesc(fmt: 'TEXT' | 'PDF' | 'WORD') {
+    this.fmtDesc = fmt;
   }
 
-  executeDownload() {
-    if (!this.editorElement || this.isEmpty) return;
+  ejecDesc() {
+    if (!this.elemEd || this.vacio) return;
     
-    const activeNote = this.noteService.getActiveNote();
-    let fileName = activeNote ? activeNote.titulo : 'Untitled Document';
-    fileName = fileName.replace(/[\\/:*?"<>|]/g, '');
+    const notaAct = this.servNota.obtNotaAct();
+    let nomArch = notaAct ? notaAct.titulo : 'Untitled Document';
+    nomArch = nomArch.replace(/[\\/:*?"<>|]/g, '');
 
-    if (this.selectedFormat === 'PDF') {
-      // Tomamos el HTML y le limpiamos los caracteres invisibles
-      let rawHtml = this.editorElement.nativeElement.innerHTML;
+    if (this.fmtDesc === 'PDF') {
+      let rawHtml = this.elemEd.nativeElement.innerHTML;
       rawHtml = rawHtml.replace(/&#8203;/g, '').replace(/\u200B/g, '');
-
-      // Convertimos el HTML a comandos de dibujo para el PDF
-      const pdfMakeContent = htmlToPdfmake(rawHtml, { window: window });
-
-      // Configuramos la hoja
-      const docDefinition = {
-        content: pdfMakeContent,
-        defaultStyle: {
-          fontSize: 12
-        },
-        pageMargins: [ 40, 40, 40, 40 ] // Márgenes estéticos
+      const contPdfMake = htmlToPdfmake(rawHtml, { window: window });
+      const defDoc = {
+        content: contPdfMake,
+        defaultStyle: { fontSize: 12 },
+        pageMargins: [ 40, 40, 40, 40 ] 
       };
-
-      // Se genera el PDF real y se lanza la descarga
-      pdfMake.createPdf(docDefinition).download(`${fileName}.pdf`);
-      
-      this.closeDownloadModal();
+      pdfMake.createPdf(defDoc).download(`${nomArch}.pdf`);
+      this.cerrModDesc();
       return; 
     }
 
-    // TXT O WORD
-    const rawText = this.editorElement.nativeElement.innerText;
-    let contentToDownload = rawText;
-    let mimeType = 'text/plain';
-    let extension = '.txt';
+    const txtPuro = this.elemEd.nativeElement.innerText;
+    let contADesc = txtPuro;
+    let tipoMime = 'text/plain';
+    let ext = '.txt';
 
-    if (this.selectedFormat === 'WORD') {
-      const htmlContent = this.editorElement.nativeElement.innerHTML;
-      contentToDownload = `<html><head><meta charset='utf-8'></head><body>${htmlContent}</body></html>`;
-      mimeType = 'application/msword';
-      extension = '.doc';
+    if (this.fmtDesc === 'WORD') {
+      const contHtml = this.elemEd.nativeElement.innerHTML;
+      contADesc = `<html><head><meta charset='utf-8'></head><body>${contHtml}</body></html>`;
+      tipoMime = 'application/msword';
+      ext = '.doc';
     }
 
-    const blob = new Blob([contentToDownload], { type: mimeType });
+    const blob = new Blob([contADesc], { type: tipoMime });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${fileName}${extension}`;
+    a.download = `${nomArch}${ext}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
 
-    this.closeDownloadModal();
+    this.cerrModDesc();
   }
 
-  focusEditor() {
-    if (!this.editorElement) return;
-    const el = this.editorElement.nativeElement;
-
-    if (document.activeElement === el) {
-      return; 
-    }
+  enfocarEd() {
+    if (!this.elemEd) return;
+    const el = this.elemEd.nativeElement;
 
     el.focus();
 
     if (el.innerText.trim().length > 0) {
-      const range = document.createRange();
+      const rango = document.createRange();
       const sel = window.getSelection();
       if (sel) {
-        range.selectNodeContents(el);
-        range.collapse(false);
+        rango.selectNodeContents(el);
+        rango.collapse(false);
         sel.removeAllRanges();
-        sel.addRange(range);
+        sel.addRange(rango);
       }
     }
   }
