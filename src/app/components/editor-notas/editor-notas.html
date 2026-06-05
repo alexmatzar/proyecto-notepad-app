@@ -1,1 +1,14 @@
 <p>editor-notas works!</p>
+
+<div class="editor-container">
+
+  <app-editor-toolbar
+    (command)="onToolbarCommand($event)">
+  </app-editor-toolbar>
+
+  <div
+    class="editor"
+    contenteditable="true">
+  </div>
+
+</div>

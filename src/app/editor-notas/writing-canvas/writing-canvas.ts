@@ -1,4 +1,7 @@
-import { Component, ElementRef, ViewChild, inject, effect, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component, ElementRef, ViewChild, inject, effect,
+  AfterViewInit, ChangeDetectorRef, HostListener
+} from '@angular/core';
 import { NoteService } from '../../services/note';
 
 declare var pdfMake: any;
@@ -13,12 +16,11 @@ declare var htmlToPdfmake: any;
 })
 export class WritingCanvasComponent implements AfterViewInit {
   public noteService = inject(NoteService);
-
   private cdr = inject(ChangeDetectorRef);
 
   isEmpty: boolean = true;
   typingTimer: any;
-  loadedNoteId: string | null = null; 
+  loadedNoteId: string | null = null;
 
   wordCount: number = 0;
   charCount: number = 0;
@@ -34,15 +36,15 @@ export class WritingCanvasComponent implements AfterViewInit {
   constructor() {
     effect(() => {
       const activeNote = this.noteService.getActiveNote();
-      
+
       if (this.editorElement && activeNote) {
         if (this.loadedNoteId !== activeNote.id) {
-           this.editorElement.nativeElement.innerHTML = activeNote.contenido;
-           this.loadedNoteId = activeNote.id;
+          this.editorElement.nativeElement.innerHTML = activeNote.contenido;
+          this.loadedNoteId = activeNote.id;
 
-           const rawText = this.editorElement.nativeElement.innerText || '';
-           this.isEmpty = rawText.trim().length === 0;
-           this.updateCounts(rawText);
+          const rawText = this.editorElement.nativeElement.innerText || '';
+          this.isEmpty = rawText.trim().length === 0;
+          this.updateCounts(rawText);
         }
       } else if (!activeNote) {
         this.loadedNoteId = null;
@@ -52,13 +54,47 @@ export class WritingCanvasComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.focusEditor();
-    }, 100);
+  ngAfterViewInit(): void {
+    setTimeout(() => this.focusEditor(), 100);
+
+    // Delegated click handler for checklist checkboxes.
+    // Checkboxes inside contenteditable are not normally interactive —
+    // this handler intercepts the click and toggles the checked state,
+    // then persists the change via the input event.
+    this.editorElement.nativeElement.addEventListener('click', (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' && (target as HTMLInputElement).type === 'checkbox') {
+        // Allow default toggle, then persist
+        setTimeout(() => {
+          const html = this.editorElement.nativeElement.innerHTML;
+          this.noteService.updateActiveNoteContent(html);
+        }, 0);
+      }
+    });
   }
 
-  onInput(event: Event) {
+  // ─── Keyboard shortcuts ───────────────────────────────────────────────────────
+  // These are handled natively by the browser inside contenteditable for
+  // Bold (Ctrl+B), Italic (Ctrl+I), Underline (Ctrl+U), Undo (Ctrl+Z),
+  // Redo (Ctrl+Y / Ctrl+Shift+Z). We listen only to persist changes.
+  @HostListener('keydown', ['$event'])
+  onKeydown(event: KeyboardEvent): void {
+    const ctrl = event.ctrlKey || event.metaKey;
+    if (!ctrl) return;
+
+    // Let the browser handle the native command, then persist after a tick
+    const nativeShortcuts = ['b','i','u','z','y'];
+    if (nativeShortcuts.includes(event.key.toLowerCase())) {
+      setTimeout(() => {
+        const html = this.editorElement?.nativeElement?.innerHTML;
+        if (html != null) {
+          this.noteService.updateActiveNoteContent(html);
+        }
+      }, 0);
+    }
+  }
+
+  onInput(event: Event): void {
     const target = event.target as HTMLElement;
     const htmlContent = target.innerHTML;
     const rawText = target.innerText;
@@ -77,41 +113,35 @@ export class WritingCanvasComponent implements AfterViewInit {
     }, 1000);
   }
 
-  updateCounts(text: string) {
-    this.charCount = text.length; 
+  updateCounts(text: string): void {
+    this.charCount = text.length;
     const trimmed = text.trim();
     this.wordCount = trimmed.length > 0 ? trimmed.split(/\s+/).length : 0;
   }
 
-  copyToClipboard() {
+  copyToClipboard(): void {
     if (this.isEmpty || !this.editorElement) return;
-
-    // Solo obtenemos el texto
     const textToCopy = this.editorElement.nativeElement.innerText;
-    
     navigator.clipboard.writeText(textToCopy).then(() => {
       this.isCopied = true;
-      this.cdr.detectChanges(); // Angular pinta el Check al instante
-      // Cuenta regresiva de 2 segundos exactos
+      this.cdr.detectChanges();
       setTimeout(() => {
         this.isCopied = false;
         this.cdr.detectChanges();
       }, 2000);
-    }).catch(err => {
-      console.error("Error al copiar al portapapeles:", err);
-    });
+    }).catch(err => console.error('Error al copiar al portapapeles:', err));
   }
 
-  openClearModal() {
+  openClearModal(): void {
     if (this.isEmpty) return;
     this.showClearModal = true;
   }
 
-  cancelClear() {
+  cancelClear(): void {
     this.showClearModal = false;
   }
 
-  confirmClear() {
+  confirmClear(): void {
     if (this.editorElement) {
       this.editorElement.nativeElement.innerHTML = '';
       this.editorElement.nativeElement.dispatchEvent(new Event('input', { bubbles: true }));
@@ -120,52 +150,41 @@ export class WritingCanvasComponent implements AfterViewInit {
     }
   }
 
-  openDownloadModal() {
+  openDownloadModal(): void {
     if (this.isEmpty) return;
     this.showDownloadModal = true;
-    this.selectedFormat = 'TEXT'; // Restablecer el formato por defecto
+    this.selectedFormat = 'TEXT';
   }
 
-  closeDownloadModal() {
+  closeDownloadModal(): void {
     this.showDownloadModal = false;
   }
 
-  selectDownloadFormat(format: 'TEXT' | 'PDF' | 'WORD') {
+  selectDownloadFormat(format: 'TEXT' | 'PDF' | 'WORD'): void {
     this.selectedFormat = format;
   }
 
-  executeDownload() {
+  executeDownload(): void {
     if (!this.editorElement || this.isEmpty) return;
-    
+
     const activeNote = this.noteService.getActiveNote();
     let fileName = activeNote ? activeNote.titulo : 'Untitled Document';
     fileName = fileName.replace(/[\\/:*?"<>|]/g, '');
 
     if (this.selectedFormat === 'PDF') {
-      // Tomamos el HTML y le limpiamos los caracteres invisibles
       let rawHtml = this.editorElement.nativeElement.innerHTML;
       rawHtml = rawHtml.replace(/&#8203;/g, '').replace(/\u200B/g, '');
-
-      // Convertimos el HTML a comandos de dibujo para el PDF
       const pdfMakeContent = htmlToPdfmake(rawHtml, { window: window });
-
-      // Configuramos la hoja
       const docDefinition = {
         content: pdfMakeContent,
-        defaultStyle: {
-          fontSize: 12
-        },
-        pageMargins: [ 40, 40, 40, 40 ] // Márgenes estéticos
+        defaultStyle: { fontSize: 12 },
+        pageMargins: [40, 40, 40, 40]
       };
-
-      // Se genera el PDF real y se lanza la descarga
       pdfMake.createPdf(docDefinition).download(`${fileName}.pdf`);
-      
       this.closeDownloadModal();
-      return; 
+      return;
     }
 
-    // TXT O WORD
     const rawText = this.editorElement.nativeElement.innerText;
     let contentToDownload = rawText;
     let mimeType = 'text/plain';
@@ -187,20 +206,14 @@ export class WritingCanvasComponent implements AfterViewInit {
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
-
     this.closeDownloadModal();
   }
 
-  focusEditor() {
+  focusEditor(): void {
     if (!this.editorElement) return;
     const el = this.editorElement.nativeElement;
-
-    if (document.activeElement === el) {
-      return; 
-    }
-
+    if (document.activeElement === el) return;
     el.focus();
-
     if (el.innerText.trim().length > 0) {
       const range = document.createRange();
       const sel = window.getSelection();

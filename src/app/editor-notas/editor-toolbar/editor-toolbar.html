@@ -1,10 +1,16 @@
 <div class="toolbar-container" data-purpose="rich-text-toolbar">
-  
+
+  <!-- Undo / Redo -->
   <div class="toolbar-group">
-    <button class="toolbar-btn" (mousedown)="keepFocus($event)" (click)="undo()" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
-    <button class="toolbar-btn" (mousedown)="keepFocus($event)" (click)="redo()" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
+    <button class="toolbar-btn" (mousedown)="keepFocus($event)" (click)="undo()" title="Undo (Ctrl+Z)">
+      <i class="fa-solid fa-rotate-left"></i>
+    </button>
+    <button class="toolbar-btn" (mousedown)="keepFocus($event)" (click)="redo()" title="Redo (Ctrl+Y)">
+      <i class="fa-solid fa-rotate-right"></i>
+    </button>
   </div>
 
+  <!-- Font family -->
   <div class="toolbar-group relative">
     <button (mousedown)="keepFocus($event)" (click)="toggleDropdown('fontFamily', $event)" class="combobox-btn font-combobox">
       <span class="combobox-label"><span class="font-serif italic font-bold">T</span> {{ selectedFont }}</span>
@@ -13,186 +19,285 @@
     @if (openDropdown === 'fontFamily') {
       <div class="dropdown-menu font-menu" (click)="preventClose($event)">
         <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="applyFont('Arial')">Arial</button>
-        <button class="dropdown-item" style="font-family: 'Courier New'" (mousedown)="keepFocus($event)" (click)="applyFont('Courier New')">Courier New</button>
-        <button class="dropdown-item" style="font-family: 'Georgia'" (mousedown)="keepFocus($event)" (click)="applyFont('Georgia')">Georgia</button>
-        <button class="dropdown-item" style="font-family: 'Times New Roman'" (mousedown)="keepFocus($event)" (click)="applyFont('Times New Roman')">Times New Roman</button>
-        <button class="dropdown-item" style="font-family: 'Trebuchet MS'" (mousedown)="keepFocus($event)" (click)="applyFont('Trebuchet MS')">Trebuchet MS</button>
-        <button class="dropdown-item" style="font-family: 'Verdana'" (mousedown)="keepFocus($event)" (click)="applyFont('Verdana')">Verdana</button>
+        <button class="dropdown-item" style="font-family:'Courier New'" (mousedown)="keepFocus($event)" (click)="applyFont('Courier New')">Courier New</button>
+        <button class="dropdown-item" style="font-family:'Georgia'" (mousedown)="keepFocus($event)" (click)="applyFont('Georgia')">Georgia</button>
+        <button class="dropdown-item" style="font-family:'Times New Roman'" (mousedown)="keepFocus($event)" (click)="applyFont('Times New Roman')">Times New Roman</button>
+        <button class="dropdown-item" style="font-family:'Trebuchet MS'" (mousedown)="keepFocus($event)" (click)="applyFont('Trebuchet MS')">Trebuchet MS</button>
+        <button class="dropdown-item" style="font-family:'Verdana'" (mousedown)="keepFocus($event)" (click)="applyFont('Verdana')">Verdana</button>
       </div>
     }
   </div>
 
+  <!-- Format / headings / lists / block -->
   <div class="toolbar-group relative">
     <button (mousedown)="keepFocus($event)" (click)="toggleDropdown('format', $event)" class="combobox-btn format-combobox">
       <span class="combobox-label"><i class="fa-solid fa-bars-staggered"></i> {{ selectedFormat }}</span>
       <i class="fa-solid fa-chevron-down text-xs"></i>
     </button>
     @if (openDropdown === 'format') {
-      <div class="dropdown-menu format-menu" (click)="preventClose($event)" style="width: 250px;">
-        
-        <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyFormat('P', 'Normal')">
+      <div class="dropdown-menu format-menu" (click)="preventClose($event)" style="width:250px">
+        <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyFormat('P','Normal')">
           <span><i class="fa-solid fa-align-left icon-fixed"></i> Normal</span>
           <span class="text-xs text-gray-400">Ctrl+Alt+0</span>
         </button>
-        
-        <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyFormat('H1', 'Heading 1')">
+        <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyFormat('H1','Heading 1')">
           <span><span class="icon-fixed font-bold text-gray-500">H1</span> Heading 1</span>
           <span class="text-xs text-gray-400">Ctrl+Alt+1</span>
         </button>
-        
-        <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyFormat('H2', 'Heading 2')">
+        <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyFormat('H2','Heading 2')">
           <span><span class="icon-fixed font-bold text-gray-500">H2</span> Heading 2</span>
           <span class="text-xs text-gray-400">Ctrl+Alt+2</span>
         </button>
-        
-        <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyFormat('H3', 'Heading 3')">
+        <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyFormat('H3','Heading 3')">
           <span><span class="icon-fixed font-bold text-gray-500">H3</span> Heading 3</span>
           <span class="text-xs text-gray-400">Ctrl+Alt+3</span>
         </button>
-
         <div class="dropdown-divider"></div>
-
         <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyList('insertOrderedList')">
           <span><i class="fa-solid fa-list-ol icon-fixed"></i> Numbered List</span>
           <span class="text-xs text-gray-400">Ctrl+Shift+7</span>
         </button>
-        
         <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyList('insertUnorderedList')">
           <span><i class="fa-solid fa-list-ul icon-fixed"></i> Bullet List</span>
           <span class="text-xs text-gray-400">Ctrl+Shift+8</span>
         </button>
-        
         <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyChecklist()">
           <span><i class="fa-regular fa-square-check icon-fixed"></i> Check List</span>
           <span class="text-xs text-gray-400">Ctrl+Shift+9</span>
         </button>
-
         <div class="dropdown-divider"></div>
-
-        <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyFormat('BLOCKQUOTE', 'Quote')">
+        <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyFormat('BLOCKQUOTE','Quote')">
           <span><i class="fa-solid fa-quote-right icon-fixed"></i> Quote</span>
           <span class="text-xs text-gray-400">Ctrl+Shift+Q</span>
         </button>
-        
-        <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyFormat('PRE', 'Code Block')">
+        <button class="dropdown-item flex justify-between items-center" (mousedown)="keepFocus($event)" (click)="applyFormat('PRE','Code Block')">
           <span><i class="fa-solid fa-code icon-fixed"></i> Code Block</span>
           <span class="text-xs text-gray-400">Ctrl+Alt+C</span>
         </button>
-
       </div>
     }
   </div>
 
+  <!-- Font size -->
   <div class="toolbar-group">
-    <button class="toolbar-btn small-btn" 
-            (mousedown)="keepFocus($event)" 
-            (click)="decreaseFontSize()">
+    <button class="toolbar-btn small-btn" (mousedown)="keepFocus($event)" (click)="decreaseFontSize()" title="Decrease font size">
       <i class="fa-solid fa-minus text-xs"></i>
     </button>
-    
-    <input type="number" 
-           class="font-size-input" 
-           [value]="currentFontSize" 
+    <input type="number"
+           class="font-size-input"
+           [value]="currentFontSize"
            (focus)="onFontSizeFocus()"
            (change)="onFontSizeManualChange($event)"
-           min="8" max="72" title="Font size" />
-    
-    <button class="toolbar-btn small-btn" 
-            (mousedown)="keepFocus($event)" 
-            (click)="increaseFontSize()">
+           min="1" max="400" title="Font size" />
+    <button class="toolbar-btn small-btn" (mousedown)="keepFocus($event)" (click)="increaseFontSize()" title="Increase font size">
       <i class="fa-solid fa-plus text-xs"></i>
     </button>
   </div>
 
+  <!-- Bold / Italic / Underline / Clear -->
   <div class="toolbar-group">
-    <button class="toolbar-btn font-bold" 
-            [style.backgroundColor]="isBold ? 'var(--btn-hover)' : 'transparent'" 
-            (mousedown)="keepFocus($event)" 
-            (click)="executeCommand('bold')">B</button>
-            
-    <button class="toolbar-btn italic font-serif" 
-            [style.backgroundColor]="isItalic ? 'var(--btn-hover)' : 'transparent'" 
-            (mousedown)="keepFocus($event)" 
-            (click)="executeCommand('italic')">I</button>
-            
-    <button class="toolbar-btn underline" 
-            [style.backgroundColor]="isUnderline ? 'var(--btn-hover)' : 'transparent'" 
-            (mousedown)="keepFocus($event)" 
-            (click)="executeCommand('underline')">U</button>
-            
-    <button class="toolbar-btn text-xs" 
-            (mousedown)="keepFocus($event)" 
-            (click)="executeCommand('removeFormat')"><i class="fa-solid fa-eraser"></i></button>
+    <button class="toolbar-btn font-bold"
+            [class.active-btn]="isBold"
+            (mousedown)="keepFocus($event)"
+            (click)="executeCommand('bold')"
+            title="Bold (Ctrl+B)">B</button>
+    <button class="toolbar-btn italic font-serif"
+            [class.active-btn]="isItalic"
+            (mousedown)="keepFocus($event)"
+            (click)="executeCommand('italic')"
+            title="Italic (Ctrl+I)">I</button>
+    <button class="toolbar-btn underline"
+            [class.active-btn]="isUnderline"
+            (mousedown)="keepFocus($event)"
+            (click)="executeCommand('underline')"
+            title="Underline (Ctrl+U)">U</button>
+    <button class="toolbar-btn text-xs"
+            (mousedown)="keepFocus($event)"
+            (click)="clearFormatting()"
+            title="Clear formatting">
+      <i class="fa-solid fa-eraser"></i>
+    </button>
   </div>
 
-  <div class="toolbar-group">
-    <button class="toolbar-btn flex-btn">
-      <span class="font-bold underline decoration-4 decoration-black underline-offset-4">A</span>
-      <i class="fa-solid fa-chevron-down text-[10px]"></i>
-    </button>
-    <button class="toolbar-btn flex-btn">
-      <i class="fa-solid fa-highlighter text-sm border-b-4 border-yellow-300 pb-0.5"></i>
-      <i class="fa-solid fa-chevron-down text-[10px]"></i>
-    </button>
-    
-    <div class="relative">
-      <button (click)="toggleDropdown('textEffects', $event)" class="toolbar-btn flex-btn">
-        Aa <i class="fa-solid fa-chevron-down text-[10px]"></i>
-      </button>
-      @if (openDropdown === 'textEffects') {
-        <div class="dropdown-menu effects-menu" (click)="preventClose($event)">
-          <button class="dropdown-item lowercase">Lowercase</button>
-          <button class="dropdown-item uppercase">Uppercase</button>
-          <button class="dropdown-item capitalize">Capitalize</button>
-          <button class="dropdown-item line-through">Strikethrough</button>
-          <button class="dropdown-item">X<sub>2</sub> Subscript</button>
-          <button class="dropdown-item">X<sup>2</sup> Superscript</button>
-          <button class="dropdown-item bg-yellow-200">Highlight</button>
-          <div class="dropdown-divider"></div>
-          <button class="dropdown-item text-red-600"><i class="fa-solid fa-eraser icon-fixed"></i> Clear Formatting</button>
-        </div>
-      }
-    </div>
-  </div>
-
+  <!-- Text color -->
   <div class="toolbar-group relative">
-    <button (click)="toggleDropdown('insert', $event)" class="combobox-btn insert-combobox">
+    <button (mousedown)="keepFocus($event)" (click)="toggleDropdown('textColor', $event)" class="toolbar-btn flex-btn" title="Text color">
+      <span class="font-bold" [style.borderBottom]="'3px solid ' + selectedTextColor"
+            [style.paddingBottom]="'1px'">A</span>
+      <i class="fa-solid fa-chevron-down text-[10px]"></i>
+    </button>
+    @if (openDropdown === 'textColor') {
+      <div class="dropdown-menu color-menu" (click)="preventClose($event)" style="width:168px;padding:8px">
+        <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:6px">Text color</div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px">
+          @for (color of TEXT_COLORS; track color) {
+            <button
+              (mousedown)="keepFocus($event)"
+              (click)="applyTextColor(color)"
+              [title]="color"
+              style="width:20px;height:20px;border-radius:3px;border:1px solid rgba(0,0,0,0.15);cursor:pointer;padding:0"
+              [style.background]="color">
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Highlight -->
+  <div class="toolbar-group relative">
+    <button (mousedown)="keepFocus($event)" (click)="toggleDropdown('highlight', $event)" class="toolbar-btn flex-btn" title="Highlight color">
+      <i class="fa-solid fa-highlighter text-sm" [style.borderBottom]="'3px solid ' + (selectedHighlightColor === 'transparent' ? '#ccc' : selectedHighlightColor)"
+         style="padding-bottom:1px"></i>
+      <i class="fa-solid fa-chevron-down text-[10px]"></i>
+    </button>
+    @if (openDropdown === 'highlight') {
+      <div class="dropdown-menu color-menu" (click)="preventClose($event)" style="width:168px;padding:8px">
+        <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:6px">Highlight color</div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px">
+          @for (color of HIGHLIGHT_COLORS; track color) {
+            <button
+              (mousedown)="keepFocus($event)"
+              (click)="applyHighlight(color)"
+              [title]="color === 'transparent' ? 'Remove highlight' : color"
+              style="width:20px;height:20px;border-radius:3px;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center"
+              [style.background]="color === 'transparent' ? '#fff' : color"
+              [style.border]="color === 'transparent' ? '1px solid #ccc' : '1px solid rgba(0,0,0,0.15)'">
+              @if (color === 'transparent') {
+                <i class="fa-solid fa-xmark" style="font-size:10px;color:#999"></i>
+              }
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Text effects (Aa) -->
+  <div class="toolbar-group relative">
+    <button (mousedown)="keepFocus($event)" (click)="toggleDropdown('textEffects', $event)" class="toolbar-btn flex-btn" title="Text effects">
+      Aa <i class="fa-solid fa-chevron-down text-[10px]"></i>
+    </button>
+    @if (openDropdown === 'textEffects') {
+      <div class="dropdown-menu effects-menu" (click)="preventClose($event)">
+        <button class="dropdown-item line-through" (mousedown)="keepFocus($event)" (click)="applyStrikethrough()">
+          <i class="fa-solid fa-strikethrough icon-fixed"></i> Strikethrough
+        </button>
+        <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="applySubscript()">
+          X<sub>2</sub> Subscript
+        </button>
+        <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="applySuperscript()">
+          X<sup>2</sup> Superscript
+        </button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item text-red-600" (mousedown)="keepFocus($event)" (click)="clearFormatting()">
+          <i class="fa-solid fa-eraser icon-fixed"></i> Clear Formatting
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Lists + Link -->
+  <div class="toolbar-group">
+    <button class="toolbar-btn"
+            (mousedown)="keepFocus($event)"
+            (click)="applyList('insertUnorderedList')"
+            title="Bullet list (Ctrl+Shift+8)">
+      <i class="fa-solid fa-list-ul"></i>
+    </button>
+    <button class="toolbar-btn"
+            (mousedown)="keepFocus($event)"
+            (click)="applyList('insertOrderedList')"
+            title="Numbered list (Ctrl+Shift+7)">
+      <i class="fa-solid fa-list-ol"></i>
+    </button>
+    <button class="toolbar-btn"
+            (mousedown)="keepFocus($event)"
+            (click)="insertHyperlink()"
+            title="Insert hyperlink">
+      <i class="fa-solid fa-link"></i>
+    </button>
+  </div>
+
+  <!-- Insert -->
+  <div class="toolbar-group relative">
+    <button (mousedown)="keepFocus($event)" (click)="toggleDropdown('insert', $event)" class="combobox-btn insert-combobox">
       <span class="combobox-label"><i class="fa-solid fa-plus text-xs"></i> Insert</span>
       <i class="fa-solid fa-chevron-down text-xs"></i>
     </button>
     @if (openDropdown === 'insert') {
       <div class="dropdown-menu insert-menu" (click)="preventClose($event)">
-        <button class="dropdown-item"><i class="fa-solid fa-minus icon-fixed"></i> Horizontal Rule</button>
-        <button class="dropdown-item"><i class="fa-solid fa-file-lines icon-fixed"></i> Page Break</button>
-        <button class="dropdown-item"><i class="fa-regular fa-image icon-fixed"></i> Image</button>
-        <button class="dropdown-item"><i class="fa-solid fa-pen icon-fixed"></i> Draw</button>
-        <button class="dropdown-item"><i class="fa-solid fa-table icon-fixed"></i> Table</button>
-        <button class="dropdown-item"><i class="fa-solid fa-columns icon-fixed"></i> Add Columns</button>
-        <button class="dropdown-item"><i class="fa-solid fa-calculator icon-fixed"></i> Equation</button>
-        <button class="dropdown-item"><i class="fa-regular fa-note-sticky icon-fixed"></i> Sticky Note</button>
-        <button class="dropdown-item"><i class="fa-solid fa-compress icon-fixed"></i> Collapsible</button>
-        <button class="dropdown-item"><i class="fa-regular fa-calendar icon-fixed"></i> Date</button>
+        <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="insertHorizontalRule()">
+          <i class="fa-solid fa-minus icon-fixed"></i> Horizontal Rule
+        </button>
+        <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="insertImage()">
+          <i class="fa-regular fa-image icon-fixed"></i> Image
+        </button>
+        <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="insertDate()">
+          <i class="fa-regular fa-calendar icon-fixed"></i> Date
+        </button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item toolbar-item-disabled" disabled title="Not yet available">
+          <i class="fa-solid fa-file-lines icon-fixed"></i> Page Break
+        </button>
+        <button class="dropdown-item toolbar-item-disabled" disabled title="Not yet available">
+          <i class="fa-solid fa-pen icon-fixed"></i> Draw
+        </button>
+        <button class="dropdown-item toolbar-item-disabled" disabled title="Not yet available">
+          <i class="fa-solid fa-table icon-fixed"></i> Table
+        </button>
+        <button class="dropdown-item toolbar-item-disabled" disabled title="Not yet available">
+          <i class="fa-solid fa-columns icon-fixed"></i> Add Columns
+        </button>
+        <button class="dropdown-item toolbar-item-disabled" disabled title="Not yet available">
+          <i class="fa-solid fa-calculator icon-fixed"></i> Equation
+        </button>
+        <button class="dropdown-item toolbar-item-disabled" disabled title="Not yet available">
+          <i class="fa-regular fa-note-sticky icon-fixed"></i> Sticky Note
+        </button>
+        <button class="dropdown-item toolbar-item-disabled" disabled title="Not yet available">
+          <i class="fa-solid fa-compress icon-fixed"></i> Collapsible
+        </button>
       </div>
     }
   </div>
 
+  <!-- Alignment -->
   <div class="toolbar-group relative no-border">
-    <button (click)="toggleDropdown('align', $event)" class="combobox-btn align-combobox">
-      <span class="combobox-label"><i class="fa-solid fa-align-left"></i> Left Align</span>
+    <button (mousedown)="keepFocus($event)" (click)="toggleDropdown('align', $event)" class="combobox-btn align-combobox">
+      <span class="combobox-label">
+        <i [class]="currentAlignIcon"></i> {{ currentAlignLabel }}
+      </span>
       <i class="fa-solid fa-chevron-down text-[10px]"></i>
     </button>
     @if (openDropdown === 'align') {
       <div class="dropdown-menu align-menu" (click)="preventClose($event)">
-        <button class="dropdown-item"><i class="fa-solid fa-align-left icon-fixed"></i> Left Align</button>
-        <button class="dropdown-item"><i class="fa-solid fa-align-center icon-fixed"></i> Center</button>
-        <button class="dropdown-item"><i class="fa-solid fa-align-right icon-fixed"></i> Right</button>
-        <button class="dropdown-item"><i class="fa-solid fa-align-justify icon-fixed"></i> Justify</button>
+        <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="applyAlign('justifyLeft','fa-solid fa-align-left','Left')">
+          <i class="fa-solid fa-align-left icon-fixed"></i> Left Align
+        </button>
+        <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="applyAlign('justifyCenter','fa-solid fa-align-center','Center')">
+          <i class="fa-solid fa-align-center icon-fixed"></i> Center
+        </button>
+        <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="applyAlign('justifyRight','fa-solid fa-align-right','Right')">
+          <i class="fa-solid fa-align-right icon-fixed"></i> Right
+        </button>
+        <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="applyAlign('justifyFull','fa-solid fa-align-justify','Justify')">
+          <i class="fa-solid fa-align-justify icon-fixed"></i> Justify
+        </button>
         <div class="dropdown-divider"></div>
-        <button class="dropdown-item"><i class="fa-solid fa-align-left icon-fixed"></i> Start</button>
-        <button class="dropdown-item"><i class="fa-solid fa-align-right icon-fixed"></i> End</button>
+        <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="applyDirection('ltr')">
+          <i class="fa-solid fa-align-left icon-fixed"></i> Start (LTR)
+        </button>
+        <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="applyDirection('rtl')">
+          <i class="fa-solid fa-align-right icon-fixed"></i> End (RTL)
+        </button>
         <div class="dropdown-divider"></div>
-        <button class="dropdown-item"><i class="fa-solid fa-outdent icon-fixed"></i> Outdent</button>
-        <button class="dropdown-item"><i class="fa-solid fa-indent icon-fixed"></i> Indent</button>
+        <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="applyOutdent()">
+          <i class="fa-solid fa-outdent icon-fixed"></i> Outdent
+        </button>
+        <button class="dropdown-item" (mousedown)="keepFocus($event)" (click)="applyIndent()">
+          <i class="fa-solid fa-indent icon-fixed"></i> Indent
+        </button>
       </div>
     }
   </div>

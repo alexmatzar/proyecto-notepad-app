@@ -1,3 +1,7 @@
+
+<h1 style="color:red">ESTE ES MI TOOLBAR</h1>
+
+
 <div class="h-14 border-b border-gray-200 flex items-center px-4 gap-2 overflow-x-auto shrink-0 bg-white rounded-t-lg" data-purpose="rich-text-toolbar">
   <div class="flex items-center gap-1 border-r border-gray-200 pr-2 mr-1 shrink-0">
     <button class="toolbar-btn"><i class="fa-solid fa-rotate-left"></i></button>
@@ -23,41 +27,61 @@
     <span class="text-sm px-2 text-gray-700">16</span>
     <button class="toolbar-btn"><i class="fa-solid fa-plus text-xs"></i></button>
   </div>
+ <div class="flex items-center gap-1 border-r border-gray-200 pr-2 mr-1 shrink-0">
 
-  <div class="flex items-center gap-1 border-r border-gray-200 pr-2 mr-1 shrink-0">
-    <button class="toolbar-btn font-bold">B</button>
-    <button class="toolbar-btn italic font-serif">I</button>
-    <button class="toolbar-btn underline">U</button>
-    <button class="toolbar-btn text-xs"><i class="fa-solid fa-code"></i></button>
-    <button class="toolbar-btn"><i class="fa-solid fa-link text-sm"></i></button>
-  </div>
+  <button
+    class="toolbar-btn font-bold"
+    (click)="emitCommand('bold')">
+    B
+  </button>
 
-  <div class="flex items-center gap-1 border-r border-gray-200 pr-2 mr-1 shrink-0">
-    <button class="flex items-center gap-1 px-2 py-1.5 text-gray-700 hover:bg-gray-100 rounded text-sm">
-      <span class="font-bold underline decoration-4 decoration-black underline-offset-4">A</span>
-      <i class="fa-solid fa-chevron-down text-[10px]"></i>
-    </button>
-    <button class="flex items-center gap-1 px-2 py-1.5 text-gray-700 hover:bg-gray-100 rounded text-sm">
-      <i class="fa-solid fa-highlighter text-sm border-b-4 border-yellow-300 pb-0.5"></i>
-      <i class="fa-solid fa-chevron-down text-[10px]"></i>
-    </button>
-    <button class="flex items-center gap-1 px-2 py-1.5 text-gray-700 hover:bg-gray-100 rounded text-sm">
-      Aa <i class="fa-solid fa-chevron-down text-[10px]"></i>
-    </button>
-  </div>
+  <button
+    class="toolbar-btn italic font-serif"
+    (click)="emitCommand('italic')">
+    I
+  </button>
+
+  <button
+    class="toolbar-btn underline"
+    (click)="emitCommand('underline')">
+    U
+  </button>
+
+  <button class="toolbar-btn text-xs">
+    <i class="fa-solid fa-code"></i>
+  </button>
+
+  <button class="toolbar-btn">
+    <i class="fa-solid fa-link text-sm"></i>
+  </button>
+
+</div>
 
   <div class="flex items-center gap-1 border-r border-gray-200 pr-2 mr-1 shrink-0">
     <button class="flex items-center gap-2 px-2 py-1.5 text-gray-700 hover:bg-gray-100 rounded text-sm">
       <i class="fa-solid fa-plus text-xs"></i> Insert
       <i class="fa-solid fa-chevron-down text-xs"></i>
     </button>
-  </div>
+  </div><div class="flex items-center gap-1 shrink-0">
 
-  <div class="flex items-center gap-1 shrink-0">
-    <button class="flex items-center gap-2 px-2 py-1.5 text-gray-700 hover:bg-gray-100 rounded text-sm">
-      <i class="fa-solid fa-align-left"></i> Left Align
-      <i class="fa-solid fa-chevron-down text-[10px]"></i>
-    </button>
-  </div>
+  <button
+    class="toolbar-btn"
+    (click)="emitCommand('alignLeft')">
+    <i class="fa-solid fa-align-left"></i>
+  </button>
+
+  <button
+    class="toolbar-btn"
+    (click)="emitCommand('alignCenter')">
+    <i class="fa-solid fa-align-center"></i>
+  </button>
+
+  <button
+    class="toolbar-btn"
+    (click)="emitCommand('alignRight')">
+    <i class="fa-solid fa-align-right"></i>
+  </button>
+
+</div>
 
 </div>
